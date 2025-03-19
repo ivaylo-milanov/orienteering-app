@@ -134,14 +134,14 @@ const Catalog = () => {
                                         View Details
                                     </Link>
                                     <Link
-                                        to={`/register/${event.id}`}
+                                        to={`/register-event`}
                                         className="flex-1 text-center px-4 py-2 text-white bg-green-600 rounded-lg hover:bg-green-700 transition-all"
                                     >
                                         Register
                                     </Link>
-                                    <button className="flex-1 text-center px-4 py-2 text-white bg-gray-600 rounded-lg hover:bg-gray-700 transition-all">
+                                    <Link to={`/competitors`} className="flex-1 text-center px-4 py-2 text-white bg-gray-600 rounded-lg hover:bg-gray-700 transition-all">
                                         Competitors ({event.registrationCount})
-                                    </button>
+                                    </Link>
                                 </div>
                             </div>
                         ))}
