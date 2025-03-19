@@ -1,9 +1,21 @@
 import { useState } from "react";
 
-const AddEditEvent = () => {
+export default function AddEditEvent() {
     const [stages, setStages] = useState([
         { name: "", description: "", date: "" },
     ]);
+    const [selectedAgeGroups, setSelectedAgeGroups] = useState([]);
+    const [formData, setFormData] = useState({
+        eventName: "",
+        eventDate: "",
+        registrationDeadline: "",
+        club: "",
+        ageGroups: [],
+    });
+
+    const ageGroups = [
+        "M12", "W12", "M18", "W18", "M25", "W25", "M35", "W35", "M45", "W45", "M55", "W55", "M65", "W65", "M75", "W75", "Open",
+    ];
 
     const handleStageChange = (index, field, value) => {
         const updatedStages = [...stages];
@@ -20,13 +32,34 @@ const AddEditEvent = () => {
         setStages(updatedStages);
     };
 
+    const toggleAgeGroupSelection = (ageGroup) => {
+        setSelectedAgeGroups((prev) => {
+            if (prev.includes(ageGroup)) {
+                return prev.filter((item) => item !== ageGroup);
+            } else {
+                return [...prev, ageGroup];
+            }
+        });
+    };
+
+    const handleSubmit = (e) => {
+        e.preventDefault();
+        // Set the selected age groups into the form data
+        setFormData((prev) => ({
+            ...prev,
+            ageGroups: selectedAgeGroups,
+        }));
+        // You can submit form data here, e.g., send it to the server
+        console.log("Form Data Submitted: ", formData);
+    };
+
     return (
         <div className="flex items-center justify-center min-h-screen bg-gray-100">
             <div className="w-full max-w-4xl p-8 space-y-6 bg-white rounded-lg shadow-lg">
                 <h2 className="text-2xl font-semibold text-center text-gray-700">
                     Create Event
                 </h2>
-                <form className="mt-6 space-y-4">
+                <form onSubmit={handleSubmit} className="mt-6 space-y-4">
                     <div>
                         <label
                             htmlFor="eventName"
@@ -92,6 +125,32 @@ const AddEditEvent = () => {
                             {/* Add more clubs as needed */}
                         </select>
                     </div>
+
+                    {/* Age Groups Buttons */}
+                    <div>
+                        <label className="block text-sm font-medium text-gray-600">
+                            Select Age Groups
+                        </label>
+                        <div className="flex flex-wrap mt-4">
+                            {ageGroups.map((ageGroup) => (
+                                <button
+                                key={ageGroup}
+                                type="button"
+                                onClick={() => toggleAgeGroupSelection(ageGroup)}
+                                className={`px-4 py-2 m-2 text-sm font-semibold rounded-md 
+                                    ${selectedAgeGroups.includes(ageGroup) 
+                                        ? "bg-blue-500 text-white"
+                                        : "bg-gray-200 text-gray-800"} 
+                                    hover:bg-blue-600 hover:text-white 
+                                    cursor-pointer`}
+                            >
+                                {ageGroup}
+                            </button>
+                            ))}
+                        </div>
+                    </div>
+
+                    {/* Stages Section */}
                     <div>
                         <label className="block text-sm font-medium text-gray-600">
                             Stages
@@ -176,6 +235,7 @@ const AddEditEvent = () => {
                             ))}
                         </div>
                     </div>
+
                     <div className="flex items-center justify-between">
                         <button
                             type="submit"
@@ -189,5 +249,3 @@ const AddEditEvent = () => {
         </div>
     );
 };
-
-export default AddEditEvent;
