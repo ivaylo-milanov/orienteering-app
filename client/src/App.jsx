@@ -8,6 +8,8 @@ import Register from "./components/Register/Register";
 import AddEditEvent from "./components/AddEditEvent/AddEditEvent";
 import EventDetails from "./components/EventDetails/EventDetails";
 import Footer from "./components/Footer/Footer";
+import Competitors from "./components/Competitors/Competitors";
+import RegisterEvent from "./components/RegisterEvent/RegisterEvent";
 
 export default function App() {
     return (
@@ -22,6 +24,8 @@ export default function App() {
                     <Route path="/register" element={<Register />} />
                     <Route path="/create-event" element={<AddEditEvent />} />
                     <Route path="/details" element={<EventDetails />} />
+                    <Route path="/competitors" element={<Competitors />} />
+                    <Route path="/register-event" element={<RegisterEvent />} />
                 </Routes>
             </main>
 
