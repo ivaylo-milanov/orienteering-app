@@ -1,34 +1,38 @@
-import { useState } from "react";
+import { useNavigate } from "react-router";
+import { useRegister } from "../../api/authApi";
+import { useUserContext } from "../../contexts/UserContext";
+import { useAgeGroups, useClubs } from "../../api/jsonStoreApi";
 
 const Register = () => {
-    const [email, setEmail] = useState("");
-    const [password, setPassword] = useState("");
-    const [confirmPassword, setConfirmPassword] = useState("");
-    const [ageGroup, setAgeGroup] = useState("");
-    const [club, setClub] = useState("");
-    const [chipNumber, setChipNumber] = useState("");
+    const navigate = useNavigate();
+    const { register } = useRegister();
+    const { userLoginHandler } = useUserContext();
+    const { ageGroups } = useAgeGroups();
+    const { clubs } = useClubs();
 
-    const ageGroups = [
-        "М12", "М14", "М35", "М40", "М45", "М50", "М55", "М60", "М65", "М70", "М75", "М80",
-        "Ж12", "Ж14", "Ж35", "Ж40", "Ж45", "Ж50", "Ж55", "Ж60", "Ж65", "Ж70", "Ж75", "Ж80",
-        "Отворен"
-    ];
+    const registerHandler = async (formData) => {
+        const { confirmPassword, ...data } = Object.fromEntries(formData);
 
-    const clubs = [
-        "Club A", "Club B", "Club C"
-    ];
+        debugger;
 
-    const handleSubmit = (e) => {
-        e.preventDefault();
-        // Here you can send form data to the server for registration
-        console.log({ email, password, confirmPassword, ageGroup, club, chipNumber });
-    };
+        if (data.password !== confirmPassword) {
+            console.log('Password missmatch');
+
+            return;
+        }
+
+        const authData = await register(data);
+
+        userLoginHandler(authData);
+
+        navigate('/');
+    }
 
     return (
         <div className="min-h-[90vh] flex items-center justify-center bg-gray-100">
             <div className="bg-white p-8 rounded-lg shadow-lg w-full max-w-md">
                 <h2 className="text-2xl font-bold mb-6 text-center">Register</h2>
-                <form onSubmit={handleSubmit}>
+                <form action={registerHandler}>
                     {/* Email */}
                     <div className="mb-4">
                         <label htmlFor="email" className="block text-gray-700">
@@ -38,8 +42,6 @@ const Register = () => {
                             type="email"
                             id="email"
                             name="email"
-                            value={email}
-                            onChange={(e) => setEmail(e.target.value)}
                             required
                             className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-600"
                         />
@@ -54,8 +56,6 @@ const Register = () => {
                             type="password"
                             id="password"
                             name="password"
-                            value={password}
-                            onChange={(e) => setPassword(e.target.value)}
                             required
                             className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-600"
                         />
@@ -70,8 +70,6 @@ const Register = () => {
                             type="password"
                             id="confirmPassword"
                             name="confirmPassword"
-                            value={confirmPassword}
-                            onChange={(e) => setConfirmPassword(e.target.value)}
                             required
                             className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-600"
                         />
@@ -85,15 +83,13 @@ const Register = () => {
                         <select
                             id="ageGroup"
                             name="ageGroup"
-                            value={ageGroup}
-                            onChange={(e) => setAgeGroup(e.target.value)}
                             required
                             className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-600"
                         >
                             <option value="">Select Age Group</option>
-                            {ageGroups.map((group, index) => (
-                                <option key={index} value={group}>
-                                    {group}
+                            {ageGroups.map((group) => (
+                                <option key={group._id} value={group._id}>
+                                    {group.name}
                                 </option>
                             ))}
                         </select>
@@ -107,15 +103,13 @@ const Register = () => {
                         <select
                             id="club"
                             name="club"
-                            value={club}
-                            onChange={(e) => setClub(e.target.value)}
                             required
                             className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-600"
                         >
                             <option value="">Select Club</option>
-                            {clubs.map((clubOption, index) => (
-                                <option key={index} value={clubOption}>
-                                    {clubOption}
+                            {clubs.map((club) => (
+                                <option key={club._id} value={club.name}>
+                                    {club.name}
                                 </option>
                             ))}
                         </select>
@@ -130,8 +124,6 @@ const Register = () => {
                             type="text"
                             id="chipNumber"
                             name="chipNumber"
-                            value={chipNumber}
-                            onChange={(e) => setChipNumber(e.target.value)}
                             required
                             className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-600"
                         />

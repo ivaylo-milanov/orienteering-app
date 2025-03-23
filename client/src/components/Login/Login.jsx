@@ -1,9 +1,27 @@
+import { useNavigate } from "react-router";
+import { useLogin } from "../../api/authApi";
+import { useUserContext } from "../../contexts/UserContext";
+
 const Login = () => {
+    const navigate = useNavigate();
+    const { userLoginHandler } = useUserContext();
+    const { login } = useLogin();
+
+    const loginHandler = async (formData) => {
+        const values = Object.fromEntries(formData);
+
+        const authData = await login(values.email, values.password);
+
+        userLoginHandler(authData);
+
+        navigate('/events');
+    }
+
     return (
         <div className="min-h-[90vh] flex items-center justify-center bg-gray-100">
             <div className="bg-white p-8 rounded-lg shadow-lg w-full max-w-md">
                 <h2 className="text-2xl font-bold mb-6 text-center">Login</h2>
-                <form>
+                <form action={loginHandler}>
                     <div className="mb-4">
                         <label htmlFor="email" className="block text-gray-700">
                             Email

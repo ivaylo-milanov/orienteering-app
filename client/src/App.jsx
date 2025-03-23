@@ -1,35 +1,46 @@
 import { Route, Routes } from "react-router";
 
-import Header from "./components/Header/Header";
-import Home from "./components/Home/Home";
-import Catalog from "./components/Catalog/Catalog";
-import Login from "./components/Login/Login";
-import Register from "./components/Register/Register";
-import AddEditEvent from "./components/AddEditEvent/AddEditEvent";
-import EventDetails from "./components/EventDetails/EventDetails";
-import Footer from "./components/Footer/Footer";
-import Competitors from "./components/Competitors/Competitors";
-import RegisterEvent from "./components/RegisterEvent/RegisterEvent";
+import Header from "./components/header/Header";
+import Home from "./components/home/Home";
+import Catalog from "./components/catalog/Catalog";
+import Login from "./components/login/Login";
+import Register from "./components/register/Register";
+import AddEditEvent from "./components/add-edit-event/AddEditEvent";
+import EventDetails from "./components/event-details/EventDetails";
+import Footer from "./components/footer/Footer";
+import Competitors from "./components/competitors/Competitors";
+import RegisterEvent from "./components/register-event/RegisterEvent";
+import UserProvider from "./providers/UserProvider";
+import Logout from "./components/Logout/Logout";
 
 export default function App() {
     return (
         <>
-            <Header />
+            <UserProvider>
+                <Header />
 
-            <main id="main-content">
-                <Routes>
-                    <Route index element={<Home />} />
-                    <Route path="/events" element={<Catalog />} />
-                    <Route path="/login" element={<Login />} />
-                    <Route path="/register" element={<Register />} />
-                    <Route path="/create-event" element={<AddEditEvent />} />
-                    <Route path="/details" element={<EventDetails />} />
-                    <Route path="/competitors" element={<Competitors />} />
-                    <Route path="/register-event" element={<RegisterEvent />} />
-                </Routes>
-            </main>
+                <main id="main-content">
+                    <Routes>
+                        <Route index element={<Home />} />
+                        <Route path="/events" element={<Catalog />} />
+                        <Route path="/login" element={<Login />} />
+                        <Route path="/register" element={<Register />} />
+                        <Route
+                            path="/create-event"
+                            element={<AddEditEvent />}
+                        />
+                        <Route path="/details" element={<EventDetails />} />
+                        <Route path="/competitors" element={<Competitors />} />
+                        <Route
+                            path="/register-event"
+                            element={<RegisterEvent />}
+                        />
+                        <Route path="/logout" element={<Logout />}/>
+                    </Routes>
+                </main>
 
-            <Footer />
+                <Footer />
+            </UserProvider>
         </>
     );
 }
