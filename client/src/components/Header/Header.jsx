@@ -1,10 +1,9 @@
 import { Link } from "react-router-dom";
 import { useUserContext } from "../../contexts/UserContext";
+import useAuth from "../../hooks/useAuth";
 
 const Header = () => {
-    const { email } = useUserContext();
-
-    console.log(email);
+    const { isAuthenticated } = useAuth();
 
     return (
         <header className="bg-gray-800 text-white p-4">
@@ -22,7 +21,7 @@ const Header = () => {
                     >
                         Events
                     </Link>
-                    {email ? (
+                    {isAuthenticated ? (
                         <>
                             <Link
                                 to="/create-event"

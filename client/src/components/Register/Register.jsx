@@ -1,7 +1,8 @@
 import { useNavigate } from "react-router";
 import { useRegister } from "../../api/authApi";
 import { useUserContext } from "../../contexts/UserContext";
-import { useAgeGroups, useClubs } from "../../api/jsonStoreApi";
+import { useClubs } from "../../api/clubsApi";
+import { useAgeGroups } from "../../api/ageGroupsApi";
 
 const Register = () => {
     const navigate = useNavigate();

@@ -1,30 +1,20 @@
 import { useState } from "react";
+import { useClubs } from "../../api/clubsApi";
+import { useCreateEvent } from "../../api/eventsApi";
+import { useNavigate } from "react-router";
+import { useAgeGroups } from "../../api/ageGroupsApi";
 
 export default function AddEditEvent() {
-    const [stages, setStages] = useState([
-        { name: "", description: "", date: "" },
-    ]);
+    const [stages, setStages] = useState([{ name: "", date: "" }]);
     const [selectedAgeGroups, setSelectedAgeGroups] = useState([]);
-    const [formData, setFormData] = useState({
-        eventName: "",
-        eventDate: "",
-        registrationDeadline: "",
-        club: "",
-        ageGroups: [],
-    });
-
-    const ageGroups = [
-        "M12", "W12", "M18", "W18", "M25", "W25", "M35", "W35", "M45", "W45", "M55", "W55", "M65", "W65", "M75", "W75", "Open",
-    ];
-
-    const handleStageChange = (index, field, value) => {
-        const updatedStages = [...stages];
-        updatedStages[index][field] = value;
-        setStages(updatedStages);
-    };
+    const [allIsClicked, setAllIsClicked] = useState(false);
+    const { ageGroups } = useAgeGroups();
+    const { clubs } = useClubs();
+    const { create } = useCreateEvent();
+    const navigate = useNavigate();
 
     const addStage = () => {
-        setStages([...stages, { name: "", description: "", date: "" }]);
+        setStages([...stages, { name: "", date: "" }]);
     };
 
     const removeStage = (index) => {
@@ -34,23 +24,56 @@ export default function AddEditEvent() {
 
     const toggleAgeGroupSelection = (ageGroup) => {
         setSelectedAgeGroups((prev) => {
-            if (prev.includes(ageGroup)) {
-                return prev.filter((item) => item !== ageGroup);
+            if (prev.includes(ageGroup.name)) {
+                if (allIsClicked) {
+                    setAllIsClicked(false);
+                }
+
+                return prev.filter((item) => item !== ageGroup.name);
             } else {
-                return [...prev, ageGroup];
+                return [...prev, ageGroup.name];
             }
         });
     };
 
-    const handleSubmit = (e) => {
-        e.preventDefault();
-        // Set the selected age groups into the form data
-        setFormData((prev) => ({
-            ...prev,
+    const setAllAgeGroups = () => {
+        setAllIsClicked(prevState => {
+            const newState = !prevState; 
+            setSelectedAgeGroups(prev => {
+                if (newState) {
+                    return [...prev, ...ageGroups.map(f => f.name)];
+                } else {
+                    return [];
+                }
+            });
+            return newState;
+        });
+    }
+
+    const onChangeStagesHandler = (e, index) => {
+        const updatedStages = [...stages];
+
+        updatedStages[index][e.target.name] = e.target.value;
+        setStages(updatedStages);
+    };
+
+    const createHandler = async (formData) => {
+        const {name, date, ...entries} = Object.fromEntries(formData);
+
+        if (entries.registrationDeadline >= entries.eventDate) {
+            console.log("The registration deadline is bigger than the event date");
+            return;
+        }
+
+        const data = {
+            ...entries,
+            stages: stages,
             ageGroups: selectedAgeGroups,
-        }));
-        // You can submit form data here, e.g., send it to the server
-        console.log("Form Data Submitted: ", formData);
+        };
+
+        create(data);
+
+        navigate("/events");
     };
 
     return (
@@ -59,7 +82,7 @@ export default function AddEditEvent() {
                 <h2 className="text-2xl font-semibold text-center text-gray-700">
                     Create Event
                 </h2>
-                <form onSubmit={handleSubmit} className="mt-6 space-y-4">
+                <form action={createHandler} className="mt-6 space-y-4">
                     <div>
                         <label
                             htmlFor="eventName"
@@ -107,22 +130,23 @@ export default function AddEditEvent() {
                     </div>
                     <div>
                         <label
-                            htmlFor="club"
+                            htmlFor="clubId"
                             className="block text-sm font-medium text-gray-600"
                         >
                             Club
                         </label>
                         <select
-                            id="club"
-                            name="club"
+                            id="clubId"
+                            name="clubId"
                             required
                             className="w-full px-4 py-2 mt-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
                         >
                             <option value="">Select Club</option>
-                            <option value="clubA">Club A</option>
-                            <option value="clubB">Club B</option>
-                            <option value="clubC">Club C</option>
-                            {/* Add more clubs as needed */}
+                            {clubs.map((club) => (
+                                <option key={club._id} value={club._id}>
+                                    {club.name}
+                                </option>
+                            ))}
                         </select>
                     </div>
 
@@ -134,19 +158,37 @@ export default function AddEditEvent() {
                         <div className="flex flex-wrap mt-4">
                             {ageGroups.map((ageGroup) => (
                                 <button
-                                key={ageGroup}
-                                type="button"
-                                onClick={() => toggleAgeGroupSelection(ageGroup)}
-                                className={`px-4 py-2 m-2 text-sm font-semibold rounded-md 
-                                    ${selectedAgeGroups.includes(ageGroup) 
-                                        ? "bg-blue-500 text-white"
-                                        : "bg-gray-200 text-gray-800"} 
-                                    hover:bg-blue-600 hover:text-white 
-                                    cursor-pointer`}
-                            >
-                                {ageGroup}
-                            </button>
+                                    key={ageGroup._id}
+                                    type="button"
+                                    onClick={() =>
+                                        toggleAgeGroupSelection(ageGroup)
+                                    }
+                                    className={`px-4 py-2 m-2 text-sm font-semibold rounded-md 
+                                    ${
+                                        selectedAgeGroups.includes(
+                                            ageGroup.name
+                                        )
+                                            ? "bg-blue-500 text-white"
+                                            : "bg-gray-200 text-gray-800"
+                                    } 
+                                    hover:bg-blue-600 hover:text-white cursor-pointer`}
+                                >
+                                    {ageGroup.name}
+                                </button>
                             ))}
+                            <button
+                                type="button"
+                                onClick={setAllAgeGroups}
+                                className={`px-4 py-2 m-2 text-sm font-semibold rounded-md 
+                                    ${
+                                        allIsClicked || selectedAgeGroups.length === ageGroups.length
+                                            ? "bg-blue-500 text-white"
+                                            : "bg-gray-200 text-gray-800"
+                                    } 
+                                    hover:bg-blue-600 hover:text-white cursor-pointer`}
+                            >
+                                all
+                            </button>
                         </div>
                     </div>
 
@@ -161,21 +203,20 @@ export default function AddEditEvent() {
                                     <div className="flex items-center space-x-4">
                                         <div className="flex-1">
                                             <label
-                                                htmlFor={`stageName-${index}`}
+                                                htmlFor={`name`}
                                                 className="block text-sm font-medium text-gray-600"
                                             >
                                                 Stage Name
                                             </label>
                                             <input
                                                 type="text"
-                                                id={`stageName-${index}`}
-                                                name={`stageName-${index}`}
+                                                id={`name`}
+                                                name={`name`}
                                                 value={stage.name}
                                                 onChange={(e) =>
-                                                    handleStageChange(
-                                                        index,
-                                                        "name",
-                                                        e.target.value
+                                                    onChangeStagesHandler(
+                                                        e,
+                                                        index
                                                     )
                                                 }
                                                 required
@@ -184,21 +225,20 @@ export default function AddEditEvent() {
                                         </div>
                                         <div className="flex-1">
                                             <label
-                                                htmlFor={`stageDate-${index}`}
+                                                htmlFor={`date`}
                                                 className="block text-sm font-medium text-gray-600"
                                             >
                                                 Stage Date
                                             </label>
                                             <input
                                                 type="date"
-                                                id={`stageDate-${index}`}
-                                                name={`stageDate-${index}`}
+                                                id={`date`}
+                                                name={`date`}
                                                 value={stage.date}
                                                 onChange={(e) =>
-                                                    handleStageChange(
-                                                        index,
-                                                        "date",
-                                                        e.target.value
+                                                    onChangeStagesHandler(
+                                                        e,
+                                                        index
                                                     )
                                                 }
                                                 required
@@ -248,4 +288,4 @@ export default function AddEditEvent() {
             </div>
         </div>
     );
-};
+}

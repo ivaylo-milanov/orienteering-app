@@ -29,7 +29,7 @@ export default function App() {
                             path="/create-event"
                             element={<AddEditEvent />}
                         />
-                        <Route path="/details" element={<EventDetails />} />
+                        <Route path="/events/:eventId/details" element={<EventDetails />} />
                         <Route path="/competitors" element={<Competitors />} />
                         <Route
                             path="/register-event"
