@@ -1,0 +1,27 @@
+.eventCard {
+    background-color: white;
+    padding: 1.5rem;
+    border-radius: 0.5rem;
+    box-shadow: 3px 3px 3px 3px rgba(0, 0, 0, 0.1);
+    min-width: 20em;
+    text-align: center;
+}
+
+.eventCardTitle {
+    font-size: 1.25rem;
+    font-weight: 600;
+}
+
+.eventCardDate {
+    margin-top: 0.5rem;
+    color: #4a5568;
+}
+
+.eventCardLink {
+    margin-top: 1rem;
+    display: inline-block;
+    padding: 0.5rem 1.5rem;
+    background-color: #10b981;
+    color: white;
+    border-radius: 9999px;
+}

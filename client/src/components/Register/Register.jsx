@@ -34,7 +34,7 @@ const Register = () => {
         <div className={styles.container}>
             <div className={styles.card}>
                 <h2 className={styles.heading}>Register</h2>
-                <form className={styles.form} onSubmit={registerHandler}>
+                <form className={styles.form} action={registerHandler}>
                     <div className={styles.mb4}>
                         <label htmlFor="email" className={styles.label}>
                             Email
@@ -130,7 +130,7 @@ const Register = () => {
                     className={`${styles.textCenter} ${styles.textGray} ${styles.mt6}`}
                 >
                     Already have an account?{" "}
-                    <a href="#" className={styles.textBlue}>
+                    <a href="/login" className={styles.textBlue}>
                         Log In
                     </a>
                 </p>

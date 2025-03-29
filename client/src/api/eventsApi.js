@@ -11,17 +11,25 @@ export const useEvents = () => {
     const [searchParams, setSearchParams] = useSearchParams();
 
     useEffect(() => {
-        const url = buildUrl(baseUrl, searchParams);
+        const url = buildUrl(baseUrl, Object.fromEntries(searchParams));
 
         request.get(url)
-            .then((result) => {
-                setEvents(result);
-            })
+            .then(setEvents)
     }, [searchParams]);
 
     const searchParamsHandler = (data) => {
         Object.keys(data).forEach((key) => {
-            if (data[key] !== "") {
+            if (key === 'sort') {
+                const sort = data[key];
+
+                if (sort.dir !== null) {
+                    searchParams.set('sortField', sort.field);
+                    searchParams.set('sortDir', sort.dir);
+                } else {
+                    searchParams.delete('sortField');
+                    searchParams.delete('sortDir');
+                }
+            } else if (data[key] !== "") {
                 searchParams.set(key, data[key]);
             } else {
                 searchParams.delete(key);
@@ -31,8 +39,26 @@ export const useEvents = () => {
         setSearchParams(searchParams);
     }
 
-    return { events, searchParamsHandler, searchParams: searchParams };
+    return { events, searchParamsHandler, searchParams };
 };
+
+export const useLatestEvents = () => {
+    const [latestEvents, setLatestEvents] = useState([]);
+
+    useEffect(() => {
+        const url = buildUrl(baseUrl, {
+            sortField: 'eventDate',
+            sortDir: 'asc',
+            pageSize: 2,
+            properties: ["_id", "eventName", "eventDate"]
+        });
+
+        request.get(url)
+            .then(setLatestEvents)
+    }, []);
+
+    return { latestEvents };
+}
 
 export const useCreateEvent = () => {
     const { request } = useAuth();

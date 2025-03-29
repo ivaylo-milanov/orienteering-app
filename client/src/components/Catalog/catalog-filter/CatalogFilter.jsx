@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { useClubs } from "../../../api/clubsApi";
 
 const CatalogFilter = ({
@@ -5,10 +6,34 @@ const CatalogFilter = ({
     changeSearchParams
 }) => {
     const { clubs } = useClubs();
+    const [_, setSortDir] = useState(null);
 
     const filterHandler = (formData) => {
         changeSearchParams(Object.fromEntries(formData));
     };
+
+    const sortHandler = () => {
+        setSortDir(state => {
+            let dir = state;
+
+            if (state === null) {
+                dir = 'asc';
+            } else if (state === 'asc') {
+                dir = 'desc'
+            } else {
+                dir = null;
+            }
+
+            changeSearchParams({
+                sort: {
+                    dir,
+                    field: 'eventDate'
+                }
+            })
+
+            return dir;
+        })
+    }
 
     return (
         <div className="bg-gray-50 p-6 rounded-md shadow-md">
@@ -62,6 +87,7 @@ const CatalogFilter = ({
 
                     <div className="flex items-end">
                         <button
+                            onClick={sortHandler}
                             className="w-full p-3 bg-blue-500 text-white rounded-md hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500"
                         >
                             Sort by Date

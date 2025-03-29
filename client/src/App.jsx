@@ -8,8 +8,6 @@ import Register from "./components/register/Register";
 import AddEditEvent from "./components/add-edit-event/AddEditEvent";
 import EventDetails from "./components/event-details/EventDetails";
 import Footer from "./components/footer/Footer";
-import Competitors from "./components/competitors/Competitors";
-import RegisterEvent from "./components/register-event/RegisterEvent";
 import UserProvider from "./providers/UserProvider";
 import Logout from "./components/Logout/Logout";
 
@@ -30,11 +28,6 @@ export default function App() {
                             element={<AddEditEvent />}
                         />
                         <Route path="/events/:eventId/details" element={<EventDetails />} />
-                        <Route path="/competitors" element={<Competitors />} />
-                        <Route
-                            path="/register-event"
-                            element={<RegisterEvent />}
-                        />
                         <Route path="/logout" element={<Logout />}/>
                     </Routes>
                 </main>
