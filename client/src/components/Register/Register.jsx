@@ -3,6 +3,7 @@ import { useRegister } from "../../api/authApi";
 import { useUserContext } from "../../contexts/UserContext";
 import { useClubs } from "../../api/clubsApi";
 import { useAgeGroups } from "../../api/ageGroupsApi";
+import styles from "./Register.module.css";
 
 const Register = () => {
     const navigate = useNavigate();
@@ -17,7 +18,7 @@ const Register = () => {
         debugger;
 
         if (data.password !== confirmPassword) {
-            console.log('Password missmatch');
+            console.log("Password missmatch");
 
             return;
         }
@@ -26,17 +27,16 @@ const Register = () => {
 
         userLoginHandler(authData);
 
-        navigate('/');
-    }
+        navigate("/");
+    };
 
     return (
-        <div className="min-h-[90vh] flex items-center justify-center bg-gray-100">
-            <div className="bg-white p-8 rounded-lg shadow-lg w-full max-w-md">
-                <h2 className="text-2xl font-bold mb-6 text-center">Register</h2>
-                <form action={registerHandler}>
-                    {/* Email */}
-                    <div className="mb-4">
-                        <label htmlFor="email" className="block text-gray-700">
+        <div className={styles.container}>
+            <div className={styles.card}>
+                <h2 className={styles.heading}>Register</h2>
+                <form className={styles.form} onSubmit={registerHandler}>
+                    <div className={styles.mb4}>
+                        <label htmlFor="email" className={styles.label}>
                             Email
                         </label>
                         <input
@@ -44,13 +44,11 @@ const Register = () => {
                             id="email"
                             name="email"
                             required
-                            className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-600"
+                            className={styles.input}
                         />
                     </div>
-
-                    {/* Password */}
-                    <div className="mb-4">
-                        <label htmlFor="password" className="block text-gray-700">
+                    <div className={styles.mb4}>
+                        <label htmlFor="password" className={styles.label}>
                             Password
                         </label>
                         <input
@@ -58,13 +56,14 @@ const Register = () => {
                             id="password"
                             name="password"
                             required
-                            className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-600"
+                            className={styles.input}
                         />
                     </div>
-
-                    {/* Confirm Password */}
-                    <div className="mb-6">
-                        <label htmlFor="confirmPassword" className="block text-gray-700">
+                    <div className={styles.mb6}>
+                        <label
+                            htmlFor="confirmPassword"
+                            className={styles.label}
+                        >
                             Confirm Password
                         </label>
                         <input
@@ -72,20 +71,18 @@ const Register = () => {
                             id="confirmPassword"
                             name="confirmPassword"
                             required
-                            className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-600"
+                            className={styles.input}
                         />
                     </div>
-
-                    {/* Age Group */}
-                    <div className="mb-4">
-                        <label htmlFor="ageGroup" className="block text-gray-700">
+                    <div className={styles.mb4}>
+                        <label htmlFor="ageGroup" className={styles.label}>
                             Age Group
                         </label>
                         <select
                             id="ageGroup"
                             name="ageGroup"
                             required
-                            className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-600"
+                            className={styles.select}
                         >
                             <option value="">Select Age Group</option>
                             {ageGroups.map((group) => (
@@ -95,17 +92,15 @@ const Register = () => {
                             ))}
                         </select>
                     </div>
-
-                    {/* Club */}
-                    <div className="mb-4">
-                        <label htmlFor="club" className="block text-gray-700">
+                    <div className={styles.mb4}>
+                        <label htmlFor="club" className={styles.label}>
                             Club
                         </label>
                         <select
                             id="club"
                             name="club"
                             required
-                            className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-600"
+                            className={styles.select}
                         >
                             <option value="">Select Club</option>
                             {clubs.map((club) => (
@@ -115,10 +110,8 @@ const Register = () => {
                             ))}
                         </select>
                     </div>
-
-                    {/* Chip Number */}
-                    <div className="mb-4">
-                        <label htmlFor="chipNumber" className="block text-gray-700">
+                    <div className={styles.mb4}>
+                        <label htmlFor="chipNumber" className={styles.label}>
                             Chip Number
                         </label>
                         <input
@@ -126,22 +119,18 @@ const Register = () => {
                             id="chipNumber"
                             name="chipNumber"
                             required
-                            className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-600"
+                            className={styles.input}
                         />
                     </div>
-
-                    {/* Submit Button */}
-                    <button
-                        type="submit"
-                        className="w-full px-4 py-2 mt-4 text-white bg-blue-500 rounded-md hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500"
-                    >
+                    <button type="submit" className={styles.button}>
                         Sign Up
                     </button>
                 </form>
-
-                <p className="text-center text-gray-600 mt-6">
+                <p
+                    className={`${styles.textCenter} ${styles.textGray} ${styles.mt6}`}
+                >
                     Already have an account?{" "}
-                    <a href="#" className="text-blue-600 hover:underline">
+                    <a href="#" className={styles.textBlue}>
                         Log In
                     </a>
                 </p>
