@@ -1,9 +1,9 @@
 import { useState } from "react";
 import ClubField from "../../inputs/club-field/ClubField";
 
-const CatalogFilter = ({ searchParams, changeSearchParams }) => {
-    const [_, setSortDir] = useState(null);
+const CatalogFilter = ({ searchParams, changeSearchParams }) => { 
     const [club, setClub] = useState("");
+    const [sort, setSort] = useState();
 
     const filterHandler = (formData) => {
         changeSearchParams(Object.fromEntries(formData));
@@ -13,75 +13,69 @@ const CatalogFilter = ({ searchParams, changeSearchParams }) => {
         setClub(e.target.value);
     };
 
-    const sortHandler = () => {
-        setSortDir((prevDir) => {
-            const newDir =
-                prevDir === null ? "asc" : prevDir === "asc" ? "desc" : null;
-            changeSearchParams({
-                sort: { dir: newDir, field: "eventDate" },
-            });
-            return newDir;
+    const sortHandler = (e) => {
+        const value = e.target.value;
+        setSort(value);
+
+        const [field, dir] = value.split('_');
+
+        changeSearchParams({
+            sort: { dir: dir, field: field },
         });
     };
 
     return (
-        <div className="bg-gray-50 p-6 rounded-md shadow-md">
-            <form action={filterHandler} className="space-y-6">
-                <div className="flex flex-wrap gap-4">
-                    <div className="flex-1 min-w-[200px]">
-                        <label className="block text-sm font-medium text-gray-600">
-                            Club
-                        </label>
+        <div className="w-full bg-white p-8 rounded-2xl shadow-xl mt-10">
+            <h2 className="text-3xl font-medium text-gray-900 mb-8 text-center">Event Filters</h2>
+            <form onSubmit={filterHandler} className="space-y-6">
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                    <div className="flex flex-col">
+                        <label className="text-sm font-semibold text-gray-700">Club</label>
                         <ClubField
                             changeClubHandler={changeClubHandler}
                             club={club}
-                            className="w-full p-3 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:outline-none"
+                            className="mt-2 p-4 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:outline-none transition duration-150 ease-in-out"
                         />
                     </div>
 
-                    <div className="flex-1 min-w-[200px]">
-                        <label className="block text-sm font-medium text-gray-600">
-                            Event Year
-                        </label>
+                    <div className="flex flex-col">
+                        <label className="text-sm font-semibold text-gray-700">Event Year</label>
                         <input
                             defaultValue={searchParams.get("eventDate") || ""}
                             type="text"
                             name="eventDate"
                             placeholder="Enter year"
-                            className="w-full p-3 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:outline-none"
+                            className="mt-2 p-4 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:outline-none transition duration-150 ease-in-out"
                         />
                     </div>
                 </div>
 
-                <div className="flex flex-wrap gap-4">
-                    <div className="flex-1 min-w-[200px]">
-                        <label className="block text-sm font-medium text-gray-600">
-                            Search Events
-                        </label>
-                        <input
-                            defaultValue={searchParams.get("eventName") || ""}
-                            name="eventName"
-                            type="text"
-                            placeholder="Search events"
-                            className="w-full p-3 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:outline-none"
-                        />
-                    </div>
-
-                    <div className="flex items-end">
-                        <button
-                            onClick={sortHandler}
-                            className="w-full p-3 bg-blue-500 text-white rounded-md hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500"
-                        >
-                            Sort by Date
-                        </button>
-                    </div>
+                <div className="flex flex-col">
+                    <label className="text-sm font-semibold text-gray-700">Search Events</label>
+                    <input
+                        defaultValue={searchParams.get("eventName") || ""}
+                        name="eventName"
+                        type="text"
+                        placeholder="Search events"
+                        className="mt-2 p-4 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:outline-none transition duration-150 ease-in-out"
+                    />
                 </div>
 
-                <div className="text-center">
+                <div className="flex justify-between items-center">
+                    <div className="flex items-center space-x-4">
+                        <label className="text-sm font-medium text-gray-600">Sort</label>
+                        <select onChange={sortHandler} value={sort} className="px-4 py-2 bg-white border border-gray-300 rounded-md text-gray-600 focus:outline-none focus:ring-2 focus:ring-indigo-500 hover:border-indigo-500 transition duration-200 ease-in-out">
+                            <option value="eventDate_asc">Event Date - Ascending</option>
+                            <option value="eventDate_desc">Event Date - Descending</option>
+                            <option value="eventName_asc">Event Name - Ascending</option>
+                            <option value="eventName_desc">Event Name - Descending</option>
+                        </select>
+                    </div>
+
                     <input
                         type="submit"
-                        value="Filter"
-                        className="p-3 bg-green-500 text-white rounded-md hover:bg-green-600 focus:outline-none focus:ring-2 focus:ring-green-500"
+                        value="Apply Filters"
+                        className="px-6 py-3 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 transition duration-200 ease-in-out"
                     />
                 </div>
             </form>
