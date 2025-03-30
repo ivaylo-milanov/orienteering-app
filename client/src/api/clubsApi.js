@@ -18,8 +18,10 @@ export const useClub = (id) => {
     const [club, setClub] = useState({});
 
     useEffect(() => {
-        request.get(`${baseUrl}/${id}`)
-            .then(setClub)
+        if (id) {
+            request.get(`${baseUrl}/${id}`)
+                .then(setClub)
+        }
     }, [id]);
 
     return { club }

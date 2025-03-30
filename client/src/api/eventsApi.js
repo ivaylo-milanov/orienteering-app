@@ -4,7 +4,7 @@ import request from "../utils/request";
 import { useSearchParams } from "react-router";
 import buildUrl from "../utils/urlBuilder";
 
-const baseUrl = 'http://localhost:3030/data/events';
+const baseUrl = "http://localhost:3030/data/events";
 
 export const useEvents = () => {
     const [events, setEvents] = useState([]);
@@ -13,8 +13,7 @@ export const useEvents = () => {
     useEffect(() => {
         const url = buildUrl(baseUrl, Object.fromEntries(searchParams));
 
-        request.get(url)
-            .then(setEvents)
+        request.get(url).then(setEvents);
     }, [searchParams]);
 
     const searchParamsHandler = (data) => {
@@ -35,7 +34,7 @@ export const useEvents = () => {
         });
 
         setSearchParams(searchParams);
-    }
+    };
 
     return { events, searchParamsHandler, searchParams };
 };
@@ -45,37 +44,48 @@ export const useLatestEvents = () => {
 
     useEffect(() => {
         const url = buildUrl(baseUrl, {
-            sortField: 'eventDate',
-            sortDir: 'asc',
+            sortField: "eventDate",
+            sortDir: "asc",
             pageSize: 2,
-            properties: ["_id", "eventName", "eventDate"]
+            properties: ["_id", "eventName", "eventDate"],
         });
 
-        request.get(url)
-            .then(setLatestEvents)
+        request.get(url).then(setLatestEvents);
     }, []);
 
     return { latestEvents };
-}
+};
 
 export const useCreateEvent = () => {
     const { request } = useAuth();
 
-    const create = (eventData) =>
-        request.post(baseUrl, eventData);
+    const create = (eventData) => request.post(baseUrl, eventData);
 
     return {
         create,
-    }
+    };
 };
 
 export const useEvent = (eventId) => {
-    const [event, setEvent] = useState({});
+    const [event, setEvent] = useState(null);
 
     useEffect(() => {
-        request.get(`http://localhost:3030/data/events/${eventId}`)
-            .then(setEvent)
+        if (eventId) {
+            request
+                .get(`http://localhost:3030/data/events/${eventId}`)
+                .then(setEvent);
+        }
     }, [eventId]);
 
-    return { event }
+    return { event };
+};
+
+export const useEditEvent = () => {
+    const { request } = useAuth();
+
+    const edit = (eventData, eventId) => request.put(`${baseUrl}/${eventId}`, eventData);
+
+    return {
+        edit,
+    }
 }

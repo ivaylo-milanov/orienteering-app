@@ -29,6 +29,7 @@ export default function App() {
                         />
                         <Route path="/events/:eventId/details" element={<EventDetails />} />
                         <Route path="/logout" element={<Logout />}/>
+                        <Route path="/events/:eventId/edit" element={<AddEditEvent />} />
                     </Routes>
                 </main>
 
