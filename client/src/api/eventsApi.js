@@ -18,19 +18,17 @@ export const useEvents = () => {
     }, [searchParams]);
 
     const searchParamsHandler = (data) => {
-        Object.keys(data).forEach((key) => {
-            if (key === 'sort') {
-                const sort = data[key];
-
-                if (sort.dir !== null) {
-                    searchParams.set('sortField', sort.field);
-                    searchParams.set('sortDir', sort.dir);
+        Object.entries(data).forEach(([key, value]) => {
+            if (key === "sort") {
+                if (value.dir !== null) {
+                    searchParams.set("sortField", value.field);
+                    searchParams.set("sortDir", value.dir);
                 } else {
-                    searchParams.delete('sortField');
-                    searchParams.delete('sortDir');
+                    searchParams.delete("sortField");
+                    searchParams.delete("sortDir");
                 }
-            } else if (data[key] !== "") {
-                searchParams.set(key, data[key]);
+            } else if (value) {
+                searchParams.set(key, value);
             } else {
                 searchParams.delete(key);
             }

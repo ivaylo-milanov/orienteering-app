@@ -7,33 +7,25 @@ const CatalogFilter = ({
 }) => {
     const { clubs } = useClubs();
     const [_, setSortDir] = useState(null);
+    const [club, setClub] = useState(""); 
 
     const filterHandler = (formData) => {
         changeSearchParams(Object.fromEntries(formData));
     };
 
-    const sortHandler = () => {
-        setSortDir(state => {
-            let dir = state;
-
-            if (state === null) {
-                dir = 'asc';
-            } else if (state === 'asc') {
-                dir = 'desc'
-            } else {
-                dir = null;
-            }
-
-            changeSearchParams({
-                sort: {
-                    dir,
-                    field: 'eventDate'
-                }
-            })
-
-            return dir;
-        })
+    const changeClubHandler = (e) => {
+        setClub(e.target.value);
     }
+
+    const sortHandler = () => {
+        setSortDir((prevDir) => {
+            const newDir = prevDir === null ? "asc" : prevDir === "asc" ? "desc" : null;
+            changeSearchParams({
+                sort: { dir: newDir, field: "eventDate" }
+            });
+            return newDir;
+        });
+    };
 
     return (
         <div className="bg-gray-50 p-6 rounded-md shadow-md">
@@ -44,7 +36,8 @@ const CatalogFilter = ({
                             Club
                         </label>
                         <select
-                            defaultValue={searchParams.get("clubId") || ""}
+                            value={club}
+                            onChange={changeClubHandler}
                             name="clubId"
                             className="w-full p-3 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:outline-none"
                         >

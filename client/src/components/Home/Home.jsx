@@ -1,7 +1,7 @@
 import { Link } from "react-router-dom";
 import styles from "./Home.module.css";
 import { useLatestEvents } from "../../api/eventsApi";
-import HomeLatestEvent from "/home-latest-event/HomeLatestEvent";
+import HomeLatestEvent from "./home-latest-event/HomeLatestEvent";
 
 const Home = () => {
     const { latestEvents } = useLatestEvents();
