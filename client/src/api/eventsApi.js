@@ -83,9 +83,10 @@ export const useEvent = (eventId) => {
 export const useEditEvent = () => {
     const { request } = useAuth();
 
-    const edit = (eventData, eventId) => request.put(`${baseUrl}/${eventId}`, eventData);
+    const edit = (eventData, eventId) =>
+        request.put(`${baseUrl}/${eventId}`, eventData);
 
     return {
         edit,
-    }
-}
+    };
+};
