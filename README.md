@@ -30,8 +30,8 @@ This project is a web application for managing orienteering events, allowing use
 
 1. **Clone the repository:**
    ```bash
-   git clone https://github.com/yourusername/orienteering-events.git
-   cd orienteering-events
+   git clone https://github.com/yourusername/orienteering-app.git
+   cd orienteering-app
    ```
 
 2. **Install dependencies:**
