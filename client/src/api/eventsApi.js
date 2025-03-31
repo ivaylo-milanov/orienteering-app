@@ -26,7 +26,7 @@ export const useEvents = () => {
                     searchParams.delete("sortField");
                     searchParams.delete("sortDir");
                 }
-            } else if (value) {
+            } else if (value && value !== '') {
                 searchParams.set(key, value);
             } else {
                 searchParams.delete(key);

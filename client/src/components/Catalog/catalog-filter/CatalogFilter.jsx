@@ -28,7 +28,7 @@ const CatalogFilter = ({ searchParams, changeSearchParams }) => {
     return (
         <div className="w-full bg-white p-8 rounded-2xl shadow-xl mt-10">
             <h2 className="text-3xl font-medium text-gray-900 mb-8 text-center">Event Filters</h2>
-            <form onSubmit={filterHandler} className="space-y-6">
+            <form action={filterHandler} className="space-y-6">
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
                     <div className="flex flex-col">
                         <label className="text-sm font-semibold text-gray-700">Club</label>
