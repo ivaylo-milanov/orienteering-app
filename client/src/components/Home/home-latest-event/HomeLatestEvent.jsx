@@ -1,3 +1,4 @@
+import { Link } from 'react-router';
 import styles from './HomeLatestEvent.module.css';
 
 const HomeLatestEvent = ({
@@ -11,12 +12,12 @@ const HomeLatestEvent = ({
                 ${eventName}
             </h3>
             <p className={styles.eventCardDate}>{eventDate}</p>
-            <a
-                href={`/details/${_id}`}
+            <Link
+                to={`/events/${_id}/details`}
                 className={styles.eventCardLink}
             >
                 Details
-            </a>
+            </Link>
         </div>
     );
 }

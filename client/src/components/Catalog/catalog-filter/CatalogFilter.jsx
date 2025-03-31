@@ -24,8 +24,6 @@ const CatalogFilter = ({ searchParams, changeSearchParams }) => {
     };
 
     const returnSortValue = () => {
-        debugger;
-
         return `${searchParams.get("sortField")}_${searchParams.get("sortDir")}`;
     }
 
@@ -37,7 +35,7 @@ const CatalogFilter = ({ searchParams, changeSearchParams }) => {
                     <div className="flex flex-col">
                         <label className="text-sm font-semibold text-gray-700">Club</label>
                         <ClubField
-                            changeClubHandler={changeClubHandler}
+                            onChange={changeClubHandler}
                             club={club}
                             className="mt-2 p-4 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:outline-none transition duration-150 ease-in-out"
                         />

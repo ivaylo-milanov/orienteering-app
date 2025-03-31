@@ -1,9 +1,30 @@
+import { useAgeGroups } from "../../../api/ageGroupsApi";
+
 const AgeGroupsField = ({
     selectedAgeGroups,
-    toggleAgeGroupSelection,
-    setAllAgeGroups,
-    ageGroups
+    setFormData
 }) => {
+    const { ageGroups } = useAgeGroups();
+
+    const toggleAgeGroupSelection = (ageGroup) => {
+        setFormData((prev) => ({
+            ...prev,
+            ageGroups: prev.ageGroups.includes(ageGroup.name)
+                ? prev.ageGroups.filter((item) => item !== ageGroup.name)
+                : [...prev.ageGroups, ageGroup.name]
+        }));
+    };
+
+    const setAllAgeGroups = () => {
+        setFormData((prev) => ({
+            ...prev,
+            ageGroups:
+                prev.ageGroups.length === ageGroups.length
+                    ? []
+                    : ageGroups.map((f) => f.name)
+        }));
+    };
+
     return (
         <>
             {ageGroups.map((ageGroup) => (
