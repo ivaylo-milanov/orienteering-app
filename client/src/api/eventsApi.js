@@ -19,7 +19,7 @@ export const useEvents = () => {
     const searchParamsHandler = (data) => {
         Object.entries(data).forEach(([key, value]) => {
             if (key === "sort") {
-                if (value.dir !== null) {
+                if (value.dir) {
                     searchParams.set("sortField", value.field);
                     searchParams.set("sortDir", value.dir);
                 } else {
@@ -45,7 +45,7 @@ export const useLatestEvents = () => {
     useEffect(() => {
         const url = buildUrl(baseUrl, {
             sortField: "eventDate",
-            sortDir: "desc",
+            sortDir: "asc",
             pageSize: 2,
             properties: ["_id", "eventName", "eventDate"],
         });

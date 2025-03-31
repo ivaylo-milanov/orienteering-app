@@ -4,7 +4,6 @@ import ClubField from "../../inputs/club-field/ClubField";
 
 const CatalogFilter = ({ searchParams, changeSearchParams }) => { 
     const [club, setClub] = useState("");
-    const [sort, setSort] = useState("");
 
     const filterHandler = (formData) => {
         changeSearchParams(Object.fromEntries(formData));
@@ -16,7 +15,6 @@ const CatalogFilter = ({ searchParams, changeSearchParams }) => {
 
     const sortHandler = (e) => {
         const value = e.target.value;
-        setSort(value);
 
         const [field, dir] = value.split('_');
 
@@ -24,6 +22,12 @@ const CatalogFilter = ({ searchParams, changeSearchParams }) => {
             sort: { dir: dir, field: field },
         });
     };
+
+    const returnSortValue = () => {
+        debugger;
+
+        return `${searchParams.get("sortField")}_${searchParams.get("sortDir")}`;
+    }
 
     return (
         <div className="w-full bg-white p-8 rounded-2xl shadow-xl mt-10">
@@ -65,7 +69,8 @@ const CatalogFilter = ({ searchParams, changeSearchParams }) => {
                 <div className="flex justify-between items-center">
                     <div className="flex items-center space-x-4">
                         <label className="text-sm font-medium text-gray-600">Sort</label>
-                        <select onChange={sortHandler} value={sort} className="px-4 py-2 bg-white border border-gray-300 rounded-md text-gray-600 focus:outline-none focus:ring-2 focus:ring-indigo-500 hover:border-indigo-500 transition duration-200 ease-in-out">
+                        <select onChange={sortHandler} value={returnSortValue() || ""} className="px-4 py-2 bg-white border border-gray-300 rounded-md text-gray-600 focus:outline-none focus:ring-2 focus:ring-indigo-500 hover:border-indigo-500 transition duration-200 ease-in-out">
+                            <option value="">Select Sort</option>
                             <option value="eventDate_asc">Event Date - Ascending</option>
                             <option value="eventDate_desc">Event Date - Descending</option>
                             <option value="eventName_asc">Event Name - Ascending</option>
