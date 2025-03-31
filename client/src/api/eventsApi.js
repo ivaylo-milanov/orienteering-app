@@ -54,7 +54,7 @@ export const useLatestEvents = () => {
     useEffect(() => {
         const url = buildUrl(baseUrl, {
             sortField: "eventDate",
-            sortDir: "asc",
+            sortDir: "desc",
             pageSize: 2,
             properties: ["_id", "eventName", "eventDate"],
         });
