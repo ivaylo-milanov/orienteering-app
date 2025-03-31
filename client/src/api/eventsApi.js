@@ -11,12 +11,21 @@ export const useEvents = () => {
     const [searchParams, setSearchParams] = useSearchParams();
 
     useEffect(() => {
+        searchParamsHandler({
+            offset: 0,
+            pageSize: 2
+        })
+    }, [])
+
+    useEffect(() => {
         const url = buildUrl(baseUrl, Object.fromEntries(searchParams));
 
         request.get(url).then(setEvents);
     }, [searchParams]);
 
     const searchParamsHandler = (data) => {
+        debugger;
+
         Object.entries(data).forEach(([key, value]) => {
             if (key === "sort") {
                 if (value.dir) {
@@ -26,7 +35,7 @@ export const useEvents = () => {
                     searchParams.delete("sortField");
                     searchParams.delete("sortDir");
                 }
-            } else if (value && value !== '') {
+            } else if (value !== '') {
                 searchParams.set(key, value);
             } else {
                 searchParams.delete(key);
@@ -99,5 +108,17 @@ export const useDeleteEvent = () => {
 
     return {
         del
+    }
+}
+
+export const useCount = () => {
+    const [count, setCount] = useState(0);
+
+    useEffect(() => {
+        request.get(baseUrl).then((result) => setCount(result?.length || 0));
+    }, []);
+
+    return {
+        count
     }
 }
