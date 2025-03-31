@@ -24,7 +24,7 @@ const EventDetails = () => {
 
     return (
         <div className="min-h-screen bg-gray-100 py-10">
-            <div className="flex justify-center flex-col max-w-3xl mx-auto bg-white p-8 rounded-xl shadow-lg">
+            <div className="flex align-center flex-col max-w-3xl mx-auto bg-white p-8 rounded-xl shadow-lg">
                 <h1 className="text-4xl font-bold text-center text-gray-800 mb-6">{event?.eventName}</h1>
 
                 <div className="mb-8">

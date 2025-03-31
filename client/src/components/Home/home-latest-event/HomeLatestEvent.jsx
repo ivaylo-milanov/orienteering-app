@@ -9,7 +9,7 @@ const HomeLatestEvent = ({
     return (
         <div className={styles.eventCard}>
             <h3 className={styles.eventCardTitle}>
-                ${eventName}
+                {eventName}
             </h3>
             <p className={styles.eventCardDate}>{eventDate}</p>
             <Link
