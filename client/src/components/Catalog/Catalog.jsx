@@ -2,7 +2,7 @@ import { useState } from "react";
 import { useCount, useEvents } from "../../api/eventsApi";
 import Pagination from "../pagination/Pagination";
 import CatalogEvent from "./catalog-event/CatalogEvent";
-import CatalogFilter from "./catalog-filter/CatalogFilter";
+import CatalogFilter from "./catalog-filters/CatalogFilter";
 
 const Catalog = () => {
     const { count } = useCount();
