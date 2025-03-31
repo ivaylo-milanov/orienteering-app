@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import { useUserContext } from "../../contexts/UserContext";
+
 import useAuth from "../../hooks/useAuth";
 
 const Header = () => {

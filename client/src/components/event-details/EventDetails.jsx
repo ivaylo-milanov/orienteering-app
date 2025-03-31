@@ -1,13 +1,25 @@
-import { Link, useParams } from "react-router";
-import { useEvent } from "../../api/eventsApi";
+import { useState } from "react";
+import { Link, useNavigate, useParams } from "react-router";
+
+import { useEvent, useDeleteEvent } from "../../api/eventsApi";
 import { useClub } from "../../api/clubsApi";
 import useAuth from "../../hooks/useAuth";
+import DeleteConfirmation from "../delete-confirmation/DeleteConfirmation";
 
 const EventDetails = () => {
     const { isAuthenticated } = useAuth();
     const { eventId } = useParams();
     const { event } = useEvent(eventId);
     const { club } = useClub(event?.clubId);
+    const [open, setOpen] = useState(false);
+    const { del } = useDeleteEvent();
+    const navigate = useNavigate();
+
+    const deleteHandler = async () => {
+        await del(eventId);
+        setOpen(false);
+        navigate("/events");
+    }
 
     return (
         <div className="min-h-screen bg-gray-100 py-10">
@@ -52,15 +64,17 @@ const EventDetails = () => {
                             >
                                 Edit
                             </Link>
-                            <Link
-                                to={`/events/${event?._id}/delete`}
-                                className="px-6 py-3 bg-red-500 text-white rounded-lg hover:bg-red-600 focus:outline-none transition duration-300 ease-in-out transform hover:scale-105"
-                            >
+                            <button 
+                                onClick={() => setOpen(true)}
+                                className="px-6 py-3 bg-red-500 text-white rounded-lg hover:bg-red-600 focus:outline-none transition duration-300 ease-in-out transform hover:scale-105">
                                 Delete
-                            </Link>
+                            </button>
                         </>
                     )}
                 </div>
+
+                <DeleteConfirmation open={open} setOpen={setOpen} onDelete={deleteHandler}/>
+
             </div>
         </div>
     );

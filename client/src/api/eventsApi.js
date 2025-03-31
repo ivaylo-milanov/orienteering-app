@@ -45,7 +45,7 @@ export const useLatestEvents = () => {
     useEffect(() => {
         const url = buildUrl(baseUrl, {
             sortField: "eventDate",
-            sortDir: "asc",
+            sortDir: "desc",
             pageSize: 2,
             properties: ["_id", "eventName", "eventDate"],
         });
@@ -90,3 +90,14 @@ export const useEditEvent = () => {
         edit,
     };
 };
+
+export const useDeleteEvent = () => {
+    const { request } = useAuth();
+
+    const del = (eventId) => 
+        request.delete(`${baseUrl}/${eventId}`);
+
+    return {
+        del
+    }
+}

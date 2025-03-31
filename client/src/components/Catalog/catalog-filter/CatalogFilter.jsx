@@ -1,9 +1,10 @@
 import { useState } from "react";
+
 import ClubField from "../../inputs/club-field/ClubField";
 
 const CatalogFilter = ({ searchParams, changeSearchParams }) => { 
     const [club, setClub] = useState("");
-    const [sort, setSort] = useState();
+    const [sort, setSort] = useState("");
 
     const filterHandler = (formData) => {
         changeSearchParams(Object.fromEntries(formData));

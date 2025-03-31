@@ -1,12 +1,16 @@
 import { useEffect, useState } from "react";
+
 import { useCreateEvent, useEditEvent, useEvent } from "../../api/eventsApi";
 import { useNavigate, useParams } from "react-router";
+import { useAgeGroups } from "../../api/ageGroupsApi"
+
 import ClubField from "../inputs/club-field/ClubField";
 import AgeGroupsField from "../inputs/age-groups-field/AgeGroupsField";
 import StagesField from "../inputs/stages-field/StagesField";
 import Label from "../label/Label";
 
 export default function AddEditEvent() {
+    const { ageGroups } = useAgeGroups();
     const { eventId } = useParams();
     const { event } = useEvent(eventId);
     const [club, setClub] = useState("");
@@ -142,6 +146,7 @@ export default function AddEditEvent() {
                                     toggleAgeGroupSelection
                                 }
                                 setAllAgeGroups={setAllAgeGroups}
+                                ageGroups={ageGroups}
                             />
                         </div>
                     </div>

@@ -1,8 +1,10 @@
 import { useNavigate } from "react-router";
+
 import { useRegister } from "../../api/authApi";
 import { useUserContext } from "../../contexts/UserContext";
 import { useClubs } from "../../api/clubsApi";
 import { useAgeGroups } from "../../api/ageGroupsApi";
+
 import styles from "./Register.module.css";
 
 const Register = () => {

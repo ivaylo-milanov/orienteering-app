@@ -1,12 +1,9 @@
-import { useAgeGroups } from "../../../api/ageGroupsApi";
-
 const AgeGroupsField = ({
     selectedAgeGroups,
     toggleAgeGroupSelection,
     setAllAgeGroups,
+    ageGroups
 }) => {
-    const { ageGroups } = useAgeGroups();
-
     return (
         <>
             {ageGroups.map((ageGroup) => (

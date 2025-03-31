@@ -1,4 +1,5 @@
 import { Navigate } from "react-router";
+
 import { useLogout } from "../../api/authApi";
 
 const Logout = () => {
