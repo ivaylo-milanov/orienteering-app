@@ -1,9 +1,28 @@
 const StagesField = ({
     stages,
-    onChangeStagesHandler,
-    addStage,
-    removeStage,
+    setFormData
 }) => {
+    const removeStage = (index) => {
+        const updatedStages = stages.filter((_, i) => i !== index);
+        setFormData((prev) => ({ ...prev, stages: updatedStages }));
+    }
+
+    const addStage = () =>
+        setFormData((prev) => ({
+            ...prev,
+            stages: [...prev.stages, { name: "", date: "" }],
+        }))
+
+    const onChangeStagesHandler = (e, index) => {
+        const { name, value } = e.target;
+        const updatedStages = [...stages];
+        updatedStages[index][name] = value;
+        setFormData((prev) => ({
+            ...prev,
+            stages: updatedStages
+        }));
+    };
+
     return (
         <>
             {stages.map((stage, index) => (

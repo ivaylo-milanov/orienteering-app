@@ -1,8 +1,6 @@
 import { useEffect, useState } from "react";
-
 import { useCreateEvent, useEditEvent, useEvent } from "../../api/eventsApi";
 import { useNavigate, useParams } from "react-router";
-import { useAgeGroups } from "../../api/ageGroupsApi"
 
 import ClubField from "../inputs/club-field/ClubField";
 import AgeGroupsField from "../inputs/age-groups-field/AgeGroupsField";
@@ -10,79 +8,60 @@ import StagesField from "../inputs/stages-field/StagesField";
 import Label from "../label/Label";
 
 export default function AddEditEvent() {
-    const { ageGroups } = useAgeGroups();
     const { eventId } = useParams();
     const { event } = useEvent(eventId);
-    const [club, setClub] = useState("");
-    const [stages, setStages] = useState([{ name: "", date: "" }]);
-    const [selectedAgeGroups, setSelectedAgeGroups] = useState([]);
     const { create } = useCreateEvent();
     const { edit } = useEditEvent();
     const navigate = useNavigate();
 
+    const [formData, setFormData] = useState({
+        eventName: "",
+        eventDate: "",
+        registrationDeadline: "",
+        clubId: "",
+        stages: [{ name: "", date: "" }],
+        ageGroups: []
+    });
+
     useEffect(() => {
         if (event) {
-            setClub(event.clubId);
-            setStages(event.stages);
-            setSelectedAgeGroups(event.ageGroups);
+            setFormData({
+                eventName: event.eventName || "",
+                eventDate: event.eventDate || "",
+                registrationDeadline: event.registrationDeadline || "",
+                clubId: event.clubId || "",
+                stages: event.stages || [{ name: "", date: "" }],
+                ageGroups: event.ageGroups || []
+            });
         }
     }, [event]);
 
-    const addStage = () =>
-        setStages((prev) => [...prev, { name: "", date: "" }]);
-    const removeStage = (index) =>
-        setStages((prev) => prev.filter((_, i) => i !== index));
-
-    const toggleAgeGroupSelection = (ageGroup) => {
-        setSelectedAgeGroups((prev) =>
-            prev.includes(ageGroup.name)
-                ? prev.filter((item) => item !== ageGroup.name)
-                : [...prev, ageGroup.name]
-        );
+    const handleChange = (e) => {
+        const { name, value } = e.target;
+        setFormData((prev) => ({
+            ...prev,
+            [name]: value
+        }));
     };
 
-    const setAllAgeGroups = () => {
-        setSelectedAgeGroups(
-            selectedAgeGroups.length === ageGroups.length
-                ? []
-                : ageGroups.map((f) => f.name)
-        );
-    };
-
-    const onChangeStagesHandler = (e, index) => {
-        const updatedStages = [...stages];
-        updatedStages[index][e.target.name] = e.target.value;
-        setStages(updatedStages);
-    };
-
-    const validateData = (formData) => {
-        const data = Object.fromEntries(formData);
-        if (data.registrationDeadline >= data.eventDate) {
-            console.log(
-                "The registration deadline must be before the event date"
-            );
-            return null;
+    const isValid = () => {
+        if (formData.registrationDeadline >= formData.eventDate) {
+            console.log("The registration deadline must be before the event date");
+            return false;
         }
-        return { ...data, stages, ageGroups: selectedAgeGroups };
+        return true;
     };
 
-    const changeClubHandler = (e) => {
-        setClub(e.target.value);
-    };
-
-    const createHandler = async (formData) => {
-        const data = validateData(formData);
-        if (data) {
-            create(data);
+    const createHandler = async () => {
+        if (isValid()) {
+            create(formData);
             navigate("/events");
         }
     };
 
-    const updateHandler = async (formData) => {
-        const data = validateData(formData);
-
-        if (data) {
-            edit(data, eventId);
+    const updateHandler = async () => {
+        if (isValid()) {
+            edit(formData, eventId);
             navigate(`/events/${eventId}/details`);
         }
     };
@@ -91,7 +70,7 @@ export default function AddEditEvent() {
         <div className="flex items-center justify-center min-h-screen bg-gray-100">
             <div className="w-full max-w-4xl p-8 space-y-6 bg-white rounded-lg shadow-lg">
                 <h2 className="text-2xl font-semibold text-center text-gray-700">
-                    Create Event
+                    {eventId ? "Edit Event" : "Create Event"}
                 </h2>
                 <form
                     action={eventId ? updateHandler : createHandler}
@@ -101,8 +80,9 @@ export default function AddEditEvent() {
                         <Label title="Event Name" />
                         <input
                             name="eventName"
-                            type="eventName"
-                            defaultValue={event?.eventName}
+                            type="text"
+                            value={formData.eventName}
+                            onChange={handleChange}
                             required
                             className="w-full px-4 py-2 mt-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
                             placeholder="Event Name"
@@ -113,7 +93,8 @@ export default function AddEditEvent() {
                         <input
                             name="eventDate"
                             type="date"
-                            defaultValue={event?.eventDate}
+                            value={formData.eventDate}
+                            onChange={handleChange}
                             required
                             className="w-full px-4 py-2 mt-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
                         />
@@ -123,7 +104,8 @@ export default function AddEditEvent() {
                         <input
                             name="registrationDeadline"
                             type="date"
-                            defaultValue={event?.registrationDeadline}
+                            value={formData.registrationDeadline}
+                            onChange={handleChange}
                             required
                             className="w-full px-4 py-2 mt-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
                         />
@@ -131,8 +113,8 @@ export default function AddEditEvent() {
                     <div className="form-group">
                         <Label title="Club" />
                         <ClubField
-                            club={club}
-                            changeClubHandler={changeClubHandler}
+                            club={formData.clubId}
+                            onChange={handleChange}
                             classes="w-full px-4 py-2 mt-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
                             required
                         />
@@ -141,12 +123,8 @@ export default function AddEditEvent() {
                         <Label title="Select Age Groups" />
                         <div className="flex flex-wrap mt-4">
                             <AgeGroupsField
-                                selectedAgeGroups={selectedAgeGroups}
-                                toggleAgeGroupSelection={
-                                    toggleAgeGroupSelection
-                                }
-                                setAllAgeGroups={setAllAgeGroups}
-                                ageGroups={ageGroups}
+                                selectedAgeGroups={formData.ageGroups}
+                                setFormData={setFormData}
                             />
                         </div>
                     </div>
@@ -154,10 +132,8 @@ export default function AddEditEvent() {
                         <Label title="Stages" />
                         <div className="mt-4 space-y-4">
                             <StagesField
-                                stages={stages}
-                                onChangeStagesHandler={onChangeStagesHandler}
-                                removeStage={removeStage}
-                                addStage={addStage}
+                                stages={formData.stages}
+                                setFormData={setFormData}
                             />
                         </div>
                     </div>
