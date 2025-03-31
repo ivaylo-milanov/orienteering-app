@@ -17,10 +17,14 @@ const buildUrl = (baseUrl, params) => {
     if (Object.keys(params).length !== 0) {
         url += '?';
 
-        const { sortField, sortDir, pageSize, properties, ...where } = params;
+        const { sortField, sortDir, pageSize, offset, properties, ...where } = params;
 
         if (sortField && sortDir) {
             queries.push(`sortBy=${sortField}${sortDir === 'desc' ? ' desc' : ''}`);
+        }
+
+        if (offset) {
+            queries.push(`offset=${offset}`);
         }
 
         if (pageSize) {
