@@ -1,0 +1,12 @@
+/Users/ivaylomilanov/Projects/orienteering-app/src/Persistance/bin/Debug/net9.0/Persistance.deps.json
+/Users/ivaylomilanov/Projects/orienteering-app/src/Persistance/bin/Debug/net9.0/Persistance.dll
+/Users/ivaylomilanov/Projects/orienteering-app/src/Persistance/bin/Debug/net9.0/Persistance.pdb
+/Users/ivaylomilanov/Projects/orienteering-app/src/Persistance/obj/Debug/net9.0/Persistance.GeneratedMSBuildEditorConfig.editorconfig
+/Users/ivaylomilanov/Projects/orienteering-app/src/Persistance/obj/Debug/net9.0/Persistance.AssemblyInfoInputs.cache
+/Users/ivaylomilanov/Projects/orienteering-app/src/Persistance/obj/Debug/net9.0/Persistance.AssemblyInfo.cs
+/Users/ivaylomilanov/Projects/orienteering-app/src/Persistance/obj/Debug/net9.0/Persistance.csproj.CoreCompileInputs.cache
+/Users/ivaylomilanov/Projects/orienteering-app/src/Persistance/obj/Debug/net9.0/Persistance.sourcelink.json
+/Users/ivaylomilanov/Projects/orienteering-app/src/Persistance/obj/Debug/net9.0/Persistance.dll
+/Users/ivaylomilanov/Projects/orienteering-app/src/Persistance/obj/Debug/net9.0/refint/Persistance.dll
+/Users/ivaylomilanov/Projects/orienteering-app/src/Persistance/obj/Debug/net9.0/Persistance.pdb
+/Users/ivaylomilanov/Projects/orienteering-app/src/Persistance/obj/Debug/net9.0/ref/Persistance.dll

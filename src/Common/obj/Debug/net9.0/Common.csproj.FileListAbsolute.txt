@@ -1,0 +1,12 @@
+/Users/ivaylomilanov/Projects/orienteering-app/src/Common/bin/Debug/net9.0/Common.deps.json
+/Users/ivaylomilanov/Projects/orienteering-app/src/Common/bin/Debug/net9.0/Common.dll
+/Users/ivaylomilanov/Projects/orienteering-app/src/Common/bin/Debug/net9.0/Common.pdb
+/Users/ivaylomilanov/Projects/orienteering-app/src/Common/obj/Debug/net9.0/Common.GeneratedMSBuildEditorConfig.editorconfig
+/Users/ivaylomilanov/Projects/orienteering-app/src/Common/obj/Debug/net9.0/Common.AssemblyInfoInputs.cache
+/Users/ivaylomilanov/Projects/orienteering-app/src/Common/obj/Debug/net9.0/Common.AssemblyInfo.cs
+/Users/ivaylomilanov/Projects/orienteering-app/src/Common/obj/Debug/net9.0/Common.csproj.CoreCompileInputs.cache
+/Users/ivaylomilanov/Projects/orienteering-app/src/Common/obj/Debug/net9.0/Common.sourcelink.json
+/Users/ivaylomilanov/Projects/orienteering-app/src/Common/obj/Debug/net9.0/Common.dll
+/Users/ivaylomilanov/Projects/orienteering-app/src/Common/obj/Debug/net9.0/refint/Common.dll
+/Users/ivaylomilanov/Projects/orienteering-app/src/Common/obj/Debug/net9.0/Common.pdb
+/Users/ivaylomilanov/Projects/orienteering-app/src/Common/obj/Debug/net9.0/ref/Common.dll

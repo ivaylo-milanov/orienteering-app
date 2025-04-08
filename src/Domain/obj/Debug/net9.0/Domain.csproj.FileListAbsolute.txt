@@ -1,0 +1,12 @@
+/Users/ivaylomilanov/Projects/orienteering-app/src/Domain/bin/Debug/net9.0/Domain.deps.json
+/Users/ivaylomilanov/Projects/orienteering-app/src/Domain/bin/Debug/net9.0/Domain.dll
+/Users/ivaylomilanov/Projects/orienteering-app/src/Domain/bin/Debug/net9.0/Domain.pdb
+/Users/ivaylomilanov/Projects/orienteering-app/src/Domain/obj/Debug/net9.0/Domain.GeneratedMSBuildEditorConfig.editorconfig
+/Users/ivaylomilanov/Projects/orienteering-app/src/Domain/obj/Debug/net9.0/Domain.AssemblyInfoInputs.cache
+/Users/ivaylomilanov/Projects/orienteering-app/src/Domain/obj/Debug/net9.0/Domain.AssemblyInfo.cs
+/Users/ivaylomilanov/Projects/orienteering-app/src/Domain/obj/Debug/net9.0/Domain.csproj.CoreCompileInputs.cache
+/Users/ivaylomilanov/Projects/orienteering-app/src/Domain/obj/Debug/net9.0/Domain.sourcelink.json
+/Users/ivaylomilanov/Projects/orienteering-app/src/Domain/obj/Debug/net9.0/Domain.dll
+/Users/ivaylomilanov/Projects/orienteering-app/src/Domain/obj/Debug/net9.0/refint/Domain.dll
+/Users/ivaylomilanov/Projects/orienteering-app/src/Domain/obj/Debug/net9.0/Domain.pdb
+/Users/ivaylomilanov/Projects/orienteering-app/src/Domain/obj/Debug/net9.0/ref/Domain.dll
