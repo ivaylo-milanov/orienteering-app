@@ -1,46 +1,20 @@
-const buildWhereClause = (params) => {
-    const clauses = [];
+const buildUrl = (baseUrl, params = {}) => {
+    const url = new URL(baseUrl);
 
-    Object.keys(params).forEach((key) => {
-        if (params[key] !== '') {
-            clauses.push(`${key} LIKE "${params[key]}"`);
+    Object.entries(params).forEach(([key, value]) => {
+        if (value === null || value === undefined || value === '') {
+            return;
+        }
+
+        if (Array.isArray(value)) {
+            url.searchParams.append(key, value.join(','));
+        } 
+        else {
+            url.searchParams.append(key, value);
         }
     });
 
-    return `where=${encodeURIComponent(clauses.join(' AND '))}`;
-};
-
-const buildUrl = (baseUrl, params) => {
-    let url = baseUrl;
-    const queries = [];
-
-    if (Object.keys(params).length !== 0) {
-        url += '?';
-
-        const { sortField, sortDir, pageSize, offset, properties, ...where } = params;
-
-        if (sortField && sortDir) {
-            queries.push(`sortBy=${sortField}${sortDir === 'desc' ? ' desc' : ''}`);
-        }
-
-        if (offset) {
-            queries.push(`offset=${offset}`);
-        }
-
-        if (pageSize) {
-            queries.push(`pageSize=${pageSize}`);
-        }
-
-        if (properties) {
-            queries.push(`select=${encodeURIComponent(properties.join(','))}`)
-        }
-
-        if (Object.keys(where).length > 0) {
-            queries.push(buildWhereClause(where));
-        }
-    }
-
-    return url + queries.join('&');
+    return url.toString();
 };
 
 export default buildUrl;

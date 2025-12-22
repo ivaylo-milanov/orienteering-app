@@ -1,19 +1,20 @@
 import { Link } from 'react-router';
-import styles from './HomeLatestEvent.module.css';
+import styles from './LatestEvent.module.css';
+import { formatDate } from '../../utils/dateFormatter';
 
-const HomeLatestEvent = ({
+const LatestEvent = ({
     _id,
-    eventDate,
-    eventName
+    date,
+    name
 }) => {
     return (
         <div className={styles.eventCard}>
             <h3 className={styles.eventCardTitle}>
-                {eventName}
+                {name}
             </h3>
-            <p className={styles.eventCardDate}>{eventDate}</p>
+            <p className={styles.eventCardDate}>{formatDate(date)}</p>
             <Link
-                to={`/events/${_id}/details`}
+                to={`/events/details/${_id}`}
                 className={styles.eventCardLink}
             >
                 Details
@@ -22,4 +23,4 @@ const HomeLatestEvent = ({
     );
 }
 
-export default HomeLatestEvent;
+export default LatestEvent;

@@ -23,7 +23,7 @@ const eventSchema = mongoose.Schema({
             message: 'Registration deadline must be before the event start date'
         }
     },
-    clubId: {
+    club: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Club',
         required: [true, 'Please assign a club to this event']

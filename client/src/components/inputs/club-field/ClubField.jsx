@@ -8,7 +8,7 @@ const ClubField = ({ onChange, club, classes, ...attributes }) => {
             className={classes}
             value={club}
             onChange={onChange}
-            name="clubId"
+            name="club"
             {...attributes}
         >
             <option value="">Select Club</option>

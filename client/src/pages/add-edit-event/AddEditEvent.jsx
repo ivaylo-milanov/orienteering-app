@@ -2,10 +2,10 @@ import { useEffect, useState } from "react";
 import { useCreateEvent, useEditEvent, useEvent } from "../../api/eventsApi";
 import { useNavigate, useParams } from "react-router";
 
-import ClubField from "../inputs/club-field/ClubField";
-import AgeGroupsField from "../inputs/age-groups-field/AgeGroupsField";
-import StagesField from "../inputs/stages-field/StagesField";
-import Label from "../label/Label";
+import ClubField from "../../components/inputs/club-field/ClubField";
+import AgeGroupsField from "../../components/inputs/age-groups-field/AgeGroupsField";
+import StagesField from "../../components/inputs/stages-field/StagesField";
+import Label from "../../components/label/Label";
 
 export default function AddEditEvent() {
     const { eventId } = useParams();

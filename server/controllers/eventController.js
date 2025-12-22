@@ -5,7 +5,7 @@ const APIFeatures = require('../utils/APIFeatures');
 const getEvents = async (req, res) => {
     try {
         const populateConfig = [
-            { path: 'clubId', select: 'name' }
+            { path: 'club', select: 'name' }
         ];
 
         const features = new APIFeatures(Event.find(), req.query)
@@ -30,7 +30,7 @@ const getEvents = async (req, res) => {
 const getEvent = async (req, res) => {
     try {
         const event = await Event.findById(req.params.id)
-            .populate('clubId', 'name email')
+            .populate('club', 'name')
             .populate('ageGroups');
 
         if (!event) {

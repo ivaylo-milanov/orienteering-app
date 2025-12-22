@@ -1,7 +1,7 @@
 import { Link } from "react-router-dom";
 
 import { useLatestEvents } from "../../api/eventsApi";
-import HomeLatestEvent from "./home-latest-event/HomeLatestEvent";
+import LatestEvent from "../../components/latest-event/LatestEvent";
 
 import styles from "./Home.module.css";
 
@@ -38,7 +38,7 @@ const Home = () => {
                 <div className={styles.eventsGrid}>
                     {latestEvents.length > 0 ? (
                         latestEvents.map((event) => (
-                            <HomeLatestEvent key={event._id} {...event} />
+                            <LatestEvent key={event._id} {...event} />
                         ))
                     ) : (
                         <p className="text-center text-gray-500">No events found</p>

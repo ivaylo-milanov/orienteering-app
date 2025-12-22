@@ -1,17 +1,16 @@
 import { useState } from "react";
-import { useCount, useEvents } from "../../api/eventsApi";
-import Pagination from "../pagination/Pagination";
-import CatalogEvent from "./catalog-event/CatalogEvent";
-import CatalogFilter from "./catalog-filters/CatalogFilter";
+import { useEvents } from "../../api/eventsApi";
+import Pagination from "../../components/pagination/Pagination";
+import Event from "../../components/event/Event";
+import Filter from "../../components/filter/Filter";
 
 const Catalog = () => {
-    const { count } = useCount();
-    const { events, searchParams, searchParamsHandler } = useEvents();
+    const { events, totalCount, searchParams, searchParamsHandler } = useEvents();
     const [currentPage, setCurrentPage] = useState(1);
     const itemsPerPage = 2;
 
     const handlePageChange = (page) => {
-        if (page >= 1 && page <= Math.ceil(count / itemsPerPage)) {
+        if (page >= 1 && page <= Math.ceil(totalCount / itemsPerPage)) {
             setCurrentPage(() => {
                 searchParamsHandler({
                     offset: (page - 1) * itemsPerPage,
@@ -36,7 +35,7 @@ const Catalog = () => {
                     </p>
                 </div>
 
-                <CatalogFilter
+                <Filter
                     searchParams={searchParams}
                     changeSearchParams={searchParamsHandler}
                 />
@@ -44,7 +43,7 @@ const Catalog = () => {
                 <div className="space-y-6 mt-6">
                     {events.length > 0 ? (
                         events.map((event) => (
-                            <CatalogEvent key={event._id} {...event} />
+                            <Event key={event._id} {...event} />
                         ))
                     ) : (
                         <p className="text-center text-gray-500">
@@ -54,7 +53,7 @@ const Catalog = () => {
                 </div>
 
                 <Pagination
-                    totalItems={count}
+                    totalItems={totalCount}
                     itemsPerPage={itemsPerPage}
                     currentPage={currentPage}
                     onPageChange={handlePageChange}

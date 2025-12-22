@@ -17,8 +17,6 @@ const Register = () => {
     const registerHandler = async (formData) => {
         const { confirmPassword, ...data } = Object.fromEntries(formData);
 
-        debugger;
-
         if (data.password !== confirmPassword) {
             console.log("Password missmatch");
 

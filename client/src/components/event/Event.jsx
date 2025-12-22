@@ -1,24 +1,21 @@
 import { Link } from "react-router";
+import { formatDate } from "../../utils/dateFormatter";
 
-import { useClub } from "../../../api/clubsApi";
-
-const CatalogEvent = ({
+const Event = ({
     _id,
-    eventName,
-    eventDate,
+    name,
+    date,
     registrationDeadline,
-    clubId,
+    club,
     stages,
 }) => {
-    const { club } = useClub(clubId);
-
     return (
         <div
             key={_id}
             className="bg-white p-6 rounded-2xl shadow-md border border-gray-300"
         >
             <h3 className="text-2xl font-semibold text-gray-900">
-                {eventName}
+                {name}
             </h3>
 
             {/* Event Info Row */}
@@ -26,11 +23,11 @@ const CatalogEvent = ({
                 <div className="grid grid-cols-3 gap-2">
                     <p className="border-l-4 border-blue-500 pl-3">
                         <span className="font-medium">Event Date:</span>{" "}
-                        {eventDate}
+                        {formatDate(date)}
                     </p>
                     <p className="border-l-4 border-red-500 pl-3">
                         <span className="font-medium">Deadline:</span>{" "}
-                        {registrationDeadline}
+                        {formatDate(registrationDeadline)}
                     </p>
                     <p className="border-l-4 border-green-500 pl-3">
                         <span className="font-medium">Club:</span> {club.name}
@@ -38,7 +35,7 @@ const CatalogEvent = ({
                 </div>
                 <div>
                     <Link
-                        to={`/events/${_id}/details`}
+                        to={`/events/details/${_id}`}
                         className="px-4 py-2 text-white bg-blue-600 rounded-lg hover:bg-blue-700 transition-all"
                     >
                         View Details
@@ -51,7 +48,7 @@ const CatalogEvent = ({
                 <div className="mt-2 flex flex-row gap-5 text-gray-800">
                     {stages.map((stage, index) => (
                         <span key={index}>
-                            <strong>{stage.name}</strong>: {stage.date}
+                            <strong>{stage.name}</strong>: {formatDate(stage.date)}
                         </span>
                     ))}
                 </div>
@@ -60,4 +57,4 @@ const CatalogEvent = ({
     );
 };
 
-export default CatalogEvent;
+export default Event;

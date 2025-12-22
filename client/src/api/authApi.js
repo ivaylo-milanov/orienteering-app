@@ -3,7 +3,7 @@ import { useContext } from "react";
 import request from "../utils/request";
 import { UserContext } from "../contexts/UserContext";
 
-const baseUrl = "http://localhost:3030/users";
+const baseUrl = "http://localhost:5001/api/auth";
 
 export const useLogin = () => {
     const login = async (email, password) =>

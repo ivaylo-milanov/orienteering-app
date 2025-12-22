@@ -41,7 +41,7 @@ const userSchema = mongoose.Schema({
         },
         default: 'user'
     },
-    clubId: {
+    club: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Club',
         required: [true, 'Please add a club id'],
