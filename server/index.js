@@ -23,7 +23,13 @@ app.use('/api/events', require('./routes/eventRoutes'));
 app.use('/api/auth', require('./routes/authRoutes'));
 
 app.use((err, req, res, next) => {
-    const statusCode = res.statusCode ? res.statusCode : 500;
+    const rawStatus = err.statusCode ?? err.status;
+    const statusCode =
+        typeof rawStatus === 'number' &&
+        rawStatus >= 400 &&
+        rawStatus < 600
+            ? rawStatus
+            : 500;
     res.status(statusCode);
     res.json({
         message: err.message,

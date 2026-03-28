@@ -29,17 +29,10 @@ export const useLogout = () => {
         if (!accessToken) {
             return;
         }
-
-        const options = {
-            headers: {
-                Authorization: `Bearer ${accessToken}`,
-            },
-        };
-
-        request.get(`${baseUrl}/logout`, null, options).then(userLogoutHandler);
+        userLogoutHandler();
     }, [accessToken, userLogoutHandler]);
 
     return {
-        isLoggedOut: !!accessToken,
+        isLoggedOut: !accessToken,
     };
 };
