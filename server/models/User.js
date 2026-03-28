@@ -45,7 +45,16 @@ const userSchema = mongoose.Schema({
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Club',
         required: [true, 'Please add a club id'],
-    }
+    },
+    ageGroup: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'AgeGroup',
+    },
+    chipNumber: {
+        type: String,
+        trim: true,
+        maxLength: [50, 'Chip number cannot exceed 50 characters'],
+    },
 }, {
     timestamps: true
 });

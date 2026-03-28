@@ -36,6 +36,20 @@ const Register = () => {
                 <h2 className={styles.heading}>Register</h2>
                 <form className={styles.form} action={registerHandler}>
                     <div className={styles.mb4}>
+                        <label htmlFor="name" className={styles.label}>
+                            Name
+                        </label>
+                        <input
+                            type="text"
+                            id="name"
+                            name="name"
+                            required
+                            minLength={2}
+                            maxLength={50}
+                            className={styles.input}
+                        />
+                    </div>
+                    <div className={styles.mb4}>
                         <label htmlFor="email" className={styles.label}>
                             Email
                         </label>
@@ -104,7 +118,7 @@ const Register = () => {
                         >
                             <option value="">Select Club</option>
                             {clubs.map((club) => (
-                                <option key={club._id} value={club.name}>
+                                <option key={club._id} value={club._id}>
                                     {club.name}
                                 </option>
                             ))}

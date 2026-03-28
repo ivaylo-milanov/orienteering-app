@@ -1,18 +1,23 @@
 const request = require('supertest');
-const app = require('../index'); 
+const app = require('../index');
 const User = require('../models/User');
-const mongoose = require('mongoose');
-const bcrypt = require('bcryptjs');
+const Club = require('../models/Club');
 
 require('./setup');
 
-const validUser = {
-    name: 'Test User',
-    email: 'test@example.com',
-    password: 'Password123'
-};
-
 describe('Auth API Integration Tests', () => {
+    let validUser;
+
+    beforeEach(async () => {
+        const club = await Club.create({ name: 'Test Club' });
+        validUser = {
+            name: 'Test User',
+            email: 'test@example.com',
+            password: 'Password123',
+            club: club._id.toString(),
+        };
+    });
+
     describe('POST /api/auth/register', () => {
         it('should register a new user successfully', async () => {
             const res = await request(app)
@@ -41,7 +46,8 @@ describe('Auth API Integration Tests', () => {
             const weakUser = {
                 name: 'Weak User',
                 email: 'weak@example.com',
-                password: 'pass' 
+                password: 'pass',
+                club: validUser.club,
             };
 
             const res = await request(app)
@@ -56,7 +62,8 @@ describe('Auth API Integration Tests', () => {
             const messyUser = {
                 name: 'Messy',
                 email: '  MESSY@Example.COM  ',
-                password: 'Password123'
+                password: 'Password123',
+                club: validUser.club,
             };
 
             const res = await request(app)

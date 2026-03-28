@@ -10,20 +10,28 @@ const generateToken = (id) => {
 
 const registerUser = async (req, res) => {
     try {
-        const { name, email, password, clubId } = req.body;
+        const { name, email, password, club, ageGroup, chipNumber } = req.body;
 
         const userExists = await User.findOne({ email });
         if (userExists) {
             return res.status(400).json({ message: 'User already exists' });
         }
 
-        const user = await User.create({
+        const payload = {
             name,
             email,
             password,
-            clubId,
-            role: 'user'
-        });
+            club,
+            role: 'user',
+        };
+        if (ageGroup) {
+            payload.ageGroup = ageGroup;
+        }
+        if (chipNumber != null && String(chipNumber).trim() !== '') {
+            payload.chipNumber = String(chipNumber).trim();
+        }
+
+        const user = await User.create(payload);
 
         if (user) {
             res.status(201).json({
@@ -31,8 +39,10 @@ const registerUser = async (req, res) => {
                 name: user.name,
                 email: user.email,
                 role: user.role,
-                clubId: user.clubId,
-                accessToken: generateToken(user._id)
+                club: user.club,
+                ageGroup: user.ageGroup,
+                chipNumber: user.chipNumber,
+                accessToken: generateToken(user._id),
             });
         }
     } catch (error) {
@@ -52,7 +62,7 @@ const loginUser = async (req, res) => {
                 name: user.name,
                 email: user.email,
                 role: user.role,
-                accessToken: generateToken(user._id)
+                accessToken: generateToken(user._id),
             });
         } else {
             res.status(401).json({ message: 'Invalid credentials' });
