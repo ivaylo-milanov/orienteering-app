@@ -3,8 +3,9 @@ import { useSearchParams } from "react-router-dom";
 import request from "../utils/request";
 import buildUrl from "../utils/urlBuilder";
 import useAuth from "../hooks/useAuth";
+import { apiBaseUrl } from "../config/apiBaseUrl";
 
-const baseUrl = "http://localhost:5001/api/events";
+const baseUrl = `${apiBaseUrl}/api/events`;
 
 export const useEvents = () => {
     const [data, setData] = useState({

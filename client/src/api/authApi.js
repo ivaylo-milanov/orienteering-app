@@ -2,8 +2,9 @@ import { useEffect } from "react";
 import { useContext } from "react";
 import request from "../utils/request";
 import { UserContext } from "../contexts/UserContext";
+import { apiBaseUrl } from "../config/apiBaseUrl";
 
-const baseUrl = "http://localhost:5001/api/auth";
+const baseUrl = `${apiBaseUrl}/api/auth`;
 
 export const useLogin = () => {
     const login = async (email, password) =>

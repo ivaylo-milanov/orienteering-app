@@ -1,7 +1,8 @@
 import { useEffect, useState } from "react";
 import request from "../utils/request";
+import { apiBaseUrl } from "../config/apiBaseUrl";
 
-const baseUrl = 'http://localhost:5001/api/agegroups';
+const baseUrl = `${apiBaseUrl}/api/agegroups`;
 
 export const useAgeGroups = () => {
     const [ageGroups, setAgeGroups] = useState([]);
