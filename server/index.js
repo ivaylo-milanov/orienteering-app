@@ -4,14 +4,25 @@ const path = require('path');
 require('dotenv').config({ path: path.join(__dirname, '.env') });
 const connectDB = require('./config/db');
 
-connectDB();
+if (process.env.NODE_ENV !== 'test') {
+    connectDB();
+}
 
 const app = express();
 
 const PORT = process.env.PORT || 5000;
 
+function resolveCorsOrigin() {
+    const raw = process.env.CORS_ORIGIN;
+    if (raw) {
+        const list = raw.split(',').map((s) => s.trim()).filter(Boolean);
+        return list.length === 1 ? list[0] : list;
+    }
+    return 'http://localhost:5173';
+}
+
 app.use(cors({
-    origin: 'http://localhost:5173',
+    origin: resolveCorsOrigin(),
     credentials: true
 }));
 app.use(express.json());

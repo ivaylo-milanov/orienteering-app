@@ -3,8 +3,6 @@ const app = require('../index');
 const User = require('../models/User');
 const Club = require('../models/Club');
 
-require('./setup');
-
 describe('Auth API Integration Tests', () => {
     let validUser;
 

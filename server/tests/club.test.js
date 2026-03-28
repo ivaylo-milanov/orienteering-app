@@ -4,8 +4,6 @@ const Club = require('../models/Club');
 const mongoose = require('mongoose');
 const { authenticated, createAdminUserWithToken } = require('./helpers/authTestHelpers');
 
-require('./setup');
-
 const validClub = {
     name: 'Compass Point Orienteering'
 };

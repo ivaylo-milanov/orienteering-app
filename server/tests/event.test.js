@@ -8,8 +8,6 @@ const {
     createTrainerUserWithToken,
 } = require('./helpers/authTestHelpers');
 
-require('./setup');
-
 const mockClubId = new mongoose.Types.ObjectId();
 const mockAgeGroupId = new mongoose.Types.ObjectId();
 

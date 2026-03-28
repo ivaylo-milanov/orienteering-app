@@ -4,8 +4,6 @@ const AgeGroup = require('../models/AgeGroup');
 const mongoose = require('mongoose');
 const { authenticated, createAdminUserWithToken } = require('./helpers/authTestHelpers');
 
-require('./setup');
-
 const validAgeGroup = {
     name: 'M21'
 };
