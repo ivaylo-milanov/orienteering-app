@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { useNavigate } from "react-router";
 
 import { useRegister } from "../../api/authApi";
@@ -13,20 +14,35 @@ const Register = () => {
     const { userLoginHandler } = useUserContext();
     const { ageGroups } = useAgeGroups();
     const { clubs } = useClubs();
+    const [error, setError] = useState("");
 
     const registerHandler = async (formData) => {
+        setError("");
         const { confirmPassword, ...data } = Object.fromEntries(formData);
 
         if (data.password !== confirmPassword) {
-            console.log("Password missmatch");
-
+            setError("Passwords do not match.");
             return;
         }
 
-        const authData = await register(data);
+        let authData;
+        try {
+            authData = await register(data);
+        } catch {
+            setError("Something went wrong. Please try again.");
+            return;
+        }
+
+        if (!authData?.accessToken) {
+            setError(
+                typeof authData?.message === "string"
+                    ? authData.message
+                    : "Registration failed. Please check your details."
+            );
+            return;
+        }
 
         userLoginHandler(authData);
-
         navigate("/");
     };
 
@@ -34,6 +50,11 @@ const Register = () => {
         <div className={styles.container}>
             <div className={styles.card}>
                 <h2 className={styles.heading}>Register</h2>
+                {error ? (
+                    <p className={styles.errorMessage} role="alert">
+                        {error}
+                    </p>
+                ) : null}
                 <form className={styles.form} action={registerHandler}>
                     <div className={styles.mb4}>
                         <label htmlFor="name" className={styles.label}>
