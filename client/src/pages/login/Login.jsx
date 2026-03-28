@@ -2,6 +2,7 @@ import { useState } from "react";
 import { useNavigate } from "react-router";
 import { useLogin } from "../../api/authApi";
 import { useUserContext } from "../../contexts/UserContext";
+import { HttpError } from "../../utils/request";
 
 import styles from "./Login.module.css";
 
@@ -18,8 +19,12 @@ const Login = () => {
         let authData;
         try {
             authData = await login(values.email, values.password);
-        } catch {
-            setError("Something went wrong. Please try again.");
+        } catch (err) {
+            setError(
+                err instanceof HttpError
+                    ? err.message
+                    : "Something went wrong. Please try again."
+            );
             return;
         }
 

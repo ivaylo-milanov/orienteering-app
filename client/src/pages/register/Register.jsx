@@ -3,6 +3,7 @@ import { useNavigate } from "react-router";
 
 import { useRegister } from "../../api/authApi";
 import { useUserContext } from "../../contexts/UserContext";
+import { HttpError } from "../../utils/request";
 import { useClubs } from "../../api/clubsApi";
 import { useAgeGroups } from "../../api/ageGroupsApi";
 
@@ -28,8 +29,12 @@ const Register = () => {
         let authData;
         try {
             authData = await register(data);
-        } catch {
-            setError("Something went wrong. Please try again.");
+        } catch (err) {
+            setError(
+                err instanceof HttpError
+                    ? err.message
+                    : "Something went wrong. Please try again."
+            );
             return;
         }
 
