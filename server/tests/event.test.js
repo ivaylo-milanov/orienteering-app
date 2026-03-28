@@ -2,7 +2,11 @@ const request = require('supertest');
 const app = require('../index');
 const Event = require('../models/Event');
 const mongoose = require('mongoose');
-const { authenticated, createAdminUserWithToken } = require('./helpers/authTestHelpers');
+const {
+    authenticated,
+    createAdminUserWithToken,
+    createTrainerUserWithToken,
+} = require('./helpers/authTestHelpers');
 
 require('./setup');
 
@@ -162,6 +166,41 @@ describe('Event API Integration Tests', () => {
             expect(res.statusCode).not.toBe(200); 
             expect(res.body.message).toMatch(/deadline must be before/i);
         });
+
+        it('should return 403 when a trainer updates an event from another club', async () => {
+            const { token: trainerToken } = await createTrainerUserWithToken();
+            const otherClubId = new mongoose.Types.ObjectId();
+            const event = await Event.create({
+                ...validEventData,
+                club: otherClubId,
+            });
+
+            const res = await authenticated(app, trainerToken)
+                .put(`/api/events/${event._id}`)
+                .send({ name: 'Hijacked name' });
+
+            expect(res.statusCode).toBe(403);
+            expect(res.body.message).toMatch(/not authorized to modify/i);
+
+            const unchanged = await Event.findById(event._id);
+            expect(unchanged.name).toBe(validEventData.name);
+        });
+
+        it('should allow a trainer to update an event for their own club', async () => {
+            const { token: trainerToken, club } = await createTrainerUserWithToken();
+            const event = await Event.create({
+                ...validEventData,
+                club: club._id,
+            });
+            const newName = 'Trainer-updated cup';
+
+            const res = await authenticated(app, trainerToken)
+                .put(`/api/events/${event._id}`)
+                .send({ name: newName });
+
+            expect(res.statusCode).toBe(200);
+            expect(res.body.name).toBe(newName);
+        });
     });
 
     describe('DELETE /api/events/:id', () => {
@@ -182,6 +221,23 @@ describe('Event API Integration Tests', () => {
             const res = await authenticated(app, authToken).delete(`/api/events/${fakeId}`);
 
             expect(res.statusCode).toBe(404);
+        });
+
+        it('should return 403 when a trainer deletes an event from another club', async () => {
+            const { token: trainerToken } = await createTrainerUserWithToken();
+            const otherClubId = new mongoose.Types.ObjectId();
+            const event = await Event.create({
+                ...validEventData,
+                club: otherClubId,
+            });
+
+            const res = await authenticated(app, trainerToken).delete(`/api/events/${event._id}`);
+
+            expect(res.statusCode).toBe(403);
+            expect(res.body.message).toMatch(/not authorized to delete/i);
+
+            const stillThere = await Event.findById(event._id);
+            expect(stillThere).not.toBeNull();
         });
     });
 });

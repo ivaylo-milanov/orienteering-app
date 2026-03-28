@@ -57,4 +57,31 @@ async function createAdminUserWithToken(overrides = {}) {
     return { token, user, club };
 }
 
-module.exports = { authenticated, createAdminUserWithToken };
+/**
+ * Creates a trainer user and JWT (same shape as production login/register).
+ */
+async function createTrainerUserWithToken(overrides = {}) {
+    const club =
+        overrides.club ??
+        (await Club.create({
+            name: overrides.clubName ?? 'Trainer test club',
+        }));
+
+    const clubId = club._id ?? club;
+
+    const user = await User.create({
+        name: overrides.name ?? 'Event test trainer',
+        email: overrides.email ?? `event-trainer-${Date.now()}@example.com`,
+        password: overrides.password ?? 'Password123',
+        club: clubId,
+        role: 'trainer',
+    });
+
+    const token = jwt.sign({ id: user._id.toString() }, process.env.JWT_SECRET, {
+        expiresIn: '30d',
+    });
+
+    return { token, user, club };
+}
+
+module.exports = { authenticated, createAdminUserWithToken, createTrainerUserWithToken };

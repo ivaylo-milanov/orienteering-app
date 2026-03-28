@@ -2,6 +2,13 @@ const Event = require('../models/Event');
 
 const APIFeatures = require('../utils/APIFeatures');
 
+const assertTrainerOwnsEvent = (req, event) => {
+    if (req.user.role !== 'trainer') {
+        return true;
+    }
+    return event.club.equals(req.user.club);
+};
+
 const getEvents = async (req, res) => {
     try {
         const populateConfig = [
@@ -62,6 +69,10 @@ const updateEvent = async (req, res) => {
             return res.status(404).json({ message: 'Event not found' });
         }
 
+        if (!assertTrainerOwnsEvent(req, event)) {
+            return res.status(403).json({ message: 'Not authorized to modify this event' });
+        }
+
         event.set(req.body);
 
         const updatedEvent = await event.save();
@@ -79,6 +90,10 @@ const deleteEvent = async (req, res) => {
 
         if (!event) {
             return res.status(404).json({ message: 'Event not found' });
+        }
+
+        if (!assertTrainerOwnsEvent(req, event)) {
+            return res.status(403).json({ message: 'Not authorized to delete this event' });
         }
 
         await event.deleteOne();

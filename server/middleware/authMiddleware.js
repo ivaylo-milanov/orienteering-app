@@ -47,9 +47,9 @@ const authorize = (...roles) => {
 
 const bindClubOwnership = (req, res, next) => {
     if (req.user.role === 'trainer') {
-        req.body.clubId = req.user.clubId; 
+        req.body.club = req.user.club;
     }
-    
+
     next();
 };
 
