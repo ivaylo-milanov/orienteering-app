@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { useCreateEvent, useEditEvent, useEvent } from "../../api/eventsApi";
+import { useAgeGroups } from "../../api/ageGroupsApi";
 import { useNavigate, useParams } from "react-router";
 
 import ClubField from "../../components/inputs/club-field/ClubField";
@@ -7,18 +8,34 @@ import AgeGroupsField from "../../components/inputs/age-groups-field/AgeGroupsFi
 import StagesField from "../../components/inputs/stages-field/StagesField";
 import Label from "../../components/label/Label";
 
+function toDateInputValue(value) {
+    if (!value) return "";
+    const d = new Date(value);
+    if (Number.isNaN(d.getTime())) return "";
+    return d.toISOString().slice(0, 10);
+}
+
+function clubIdFromEvent(event) {
+    if (!event?.club) return "";
+    const c = event.club;
+    return typeof c === "object" && c !== null
+        ? String(c._id ?? "")
+        : String(c);
+}
+
 export default function AddEditEvent() {
     const { eventId } = useParams();
     const { event } = useEvent(eventId);
+    const { ageGroups: allAgeGroups } = useAgeGroups();
     const { create } = useCreateEvent();
     const { edit } = useEditEvent();
     const navigate = useNavigate();
 
     const [formData, setFormData] = useState({
-        eventName: "",
-        eventDate: "",
+        name: "",
+        date: "",
         registrationDeadline: "",
-        clubId: "",
+        club: "",
         stages: [{ name: "", date: "" }],
         ageGroups: []
     });
@@ -26,12 +43,20 @@ export default function AddEditEvent() {
     useEffect(() => {
         if (event) {
             setFormData({
-                eventName: event.eventName || "",
-                eventDate: event.eventDate || "",
-                registrationDeadline: event.registrationDeadline || "",
-                clubId: event.clubId || "",
-                stages: event.stages || [{ name: "", date: "" }],
-                ageGroups: event.ageGroups || []
+                name: event.name || "",
+                date: toDateInputValue(event.date),
+                registrationDeadline: toDateInputValue(event.registrationDeadline),
+                club: clubIdFromEvent(event),
+                stages:
+                    event.stages?.length > 0
+                        ? event.stages.map((s) => ({
+                              name: s.name || "",
+                              date: toDateInputValue(s.date)
+                          }))
+                        : [{ name: "", date: "" }],
+                ageGroups: (event.ageGroups || []).map((ag) =>
+                    typeof ag === "object" && ag !== null ? ag.name : ag
+                )
             });
         }
     }, [event]);
@@ -44,8 +69,26 @@ export default function AddEditEvent() {
         }));
     };
 
+    const buildApiPayload = () => {
+        const ageGroupIds = formData.ageGroups
+            .map((name) => allAgeGroups.find((a) => a.name === name)?._id)
+            .filter(Boolean);
+
+        return {
+            name: formData.name,
+            date: formData.date,
+            registrationDeadline: formData.registrationDeadline,
+            club: formData.club,
+            stages: formData.stages.map((s) => ({
+                name: s.name,
+                date: s.date
+            })),
+            ageGroups: ageGroupIds
+        };
+    };
+
     const isValid = () => {
-        if (formData.registrationDeadline >= formData.eventDate) {
+        if (formData.registrationDeadline >= formData.date) {
             console.log("The registration deadline must be before the event date");
             return false;
         }
@@ -54,15 +97,15 @@ export default function AddEditEvent() {
 
     const createHandler = async () => {
         if (isValid()) {
-            create(formData);
+            create(buildApiPayload());
             navigate("/events");
         }
     };
 
     const updateHandler = async () => {
         if (isValid()) {
-            edit(formData, eventId);
-            navigate(`/events/${eventId}/details`);
+            edit(buildApiPayload(), eventId);
+            navigate(`/events/details/${eventId}`);
         }
     };
 
@@ -79,9 +122,9 @@ export default function AddEditEvent() {
                     <div className="form-group">
                         <Label title="Event Name" />
                         <input
-                            name="eventName"
+                            name="name"
                             type="text"
-                            value={formData.eventName}
+                            value={formData.name}
                             onChange={handleChange}
                             required
                             className="w-full px-4 py-2 mt-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
@@ -91,9 +134,9 @@ export default function AddEditEvent() {
                     <div className="form-group">
                         <Label title="Event Date" />
                         <input
-                            name="eventDate"
+                            name="date"
                             type="date"
-                            value={formData.eventDate}
+                            value={formData.date}
                             onChange={handleChange}
                             required
                             className="w-full px-4 py-2 mt-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
@@ -113,7 +156,7 @@ export default function AddEditEvent() {
                     <div className="form-group">
                         <Label title="Club" />
                         <ClubField
-                            club={formData.clubId}
+                            club={formData.club}
                             onChange={handleChange}
                             classes="w-full px-4 py-2 mt-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
                             required
