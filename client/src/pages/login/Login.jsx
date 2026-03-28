@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { useNavigate } from "react-router";
 import { useLogin } from "../../api/authApi";
 import { useUserContext } from "../../contexts/UserContext";
@@ -8,21 +9,42 @@ const Login = () => {
     const navigate = useNavigate();
     const { userLoginHandler } = useUserContext();
     const { login } = useLogin();
+    const [error, setError] = useState("");
 
     const loginHandler = async (formData) => {
+        setError("");
         const values = Object.fromEntries(formData);
 
-        const authData = await login(values.email, values.password);
+        let authData;
+        try {
+            authData = await login(values.email, values.password);
+        } catch {
+            setError("Something went wrong. Please try again.");
+            return;
+        }
+
+        if (!authData?.accessToken) {
+            setError(
+                typeof authData?.message === "string"
+                    ? authData.message
+                    : "Invalid email or password."
+            );
+            return;
+        }
 
         userLoginHandler(authData);
-
-        navigate('/events');
-    }
+        navigate("/events");
+    };
 
     return (
         <div className={styles.container}>
             <div className={styles.card}>
                 <h2 className={styles.header}>Login</h2>
+                {error ? (
+                    <p className={styles.errorMessage} role="alert">
+                        {error}
+                    </p>
+                ) : null}
                 <form action={loginHandler}>
                     <div className={styles.inputGroup}>
                         <label htmlFor="email" className={styles.inputLabel}>

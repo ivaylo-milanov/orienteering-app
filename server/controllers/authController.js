@@ -32,7 +32,7 @@ const registerUser = async (req, res) => {
                 email: user.email,
                 role: user.role,
                 clubId: user.clubId,
-                token: generateToken(user._id)
+                accessToken: generateToken(user._id)
             });
         }
     } catch (error) {
@@ -52,7 +52,7 @@ const loginUser = async (req, res) => {
                 name: user.name,
                 email: user.email,
                 role: user.role,
-                token: generateToken(user._id)
+                accessToken: generateToken(user._id)
             });
         } else {
             res.status(401).json({ message: 'Invalid credentials' });

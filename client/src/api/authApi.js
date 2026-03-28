@@ -32,7 +32,7 @@ export const useLogout = () => {
 
         const options = {
             headers: {
-                "X-Authorization": accessToken,
+                Authorization: `Bearer ${accessToken}`,
             },
         };
 

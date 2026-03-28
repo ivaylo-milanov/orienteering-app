@@ -46,14 +46,9 @@ const authorize = (...roles) => {
 };
 
 const bindClubOwnership = (req, res, next) => {
-    // 1. If Trainer: Force the clubId to be THEIR club
     if (req.user.role === 'trainer') {
         req.body.clubId = req.user.clubId; 
     }
-    
-    // 2. If User: They usually can't create events, but if they could, restrict them here
-    
-    // 3. If Admin: Do nothing. Let them send whatever clubId they want in req.body.
     
     next();
 };

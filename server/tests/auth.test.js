@@ -22,7 +22,7 @@ describe('Auth API Integration Tests', () => {
             expect(res.statusCode).toBe(201);
             expect(res.body.name).toBe(validUser.name);
             expect(res.body.email).toBe(validUser.email.toLowerCase());
-            expect(res.body).toHaveProperty('token');
+            expect(res.body).toHaveProperty('accessToken');
             expect(res.body).not.toHaveProperty('password');
         });
 
@@ -83,7 +83,7 @@ describe('Auth API Integration Tests', () => {
                 });
 
             expect(res.statusCode).toBe(200);
-            expect(res.body).toHaveProperty('token');
+            expect(res.body).toHaveProperty('accessToken');
             expect(res.body.email).toBe(validUser.email);
         });
 
@@ -119,7 +119,7 @@ describe('Auth API Integration Tests', () => {
                 .post('/api/auth/register')
                 .send(validUser);
             
-            const token = registerRes.body.token;
+            const token = registerRes.body.accessToken;
 
             const res = await request(app)
                 .get('/api/auth/me')
